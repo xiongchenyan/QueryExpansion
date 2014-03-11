@@ -16,6 +16,7 @@ site.addsitedir('/bos/usr0/cx/PyCode/QueryExpansion')
 from base.ExpansionBase import *
 from operator import attrgetter
 from CrossValidation.ParameterSet import *
+from IndriRelate.IndriInferencer import *
 
 class IndriExpansionC(QueryExpansionC):
     

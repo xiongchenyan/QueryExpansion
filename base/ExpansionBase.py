@@ -20,7 +20,7 @@ import site
 site.addsitedir('/bos/usr4/cx/local/lib/python2.7/site-packages')
 site.addsitedir('/bos/usr4/cx/cxPylib')
 
-from IndriRelate.IndriPackedRes import PackedIndriResC,ReadPackedIndriRes
+from IndriRelate.IndriPackedRes import *
 from IndriRelate.CtfLoader import *
 from ExpTerm import *
 from cxBase.base import cxConf
