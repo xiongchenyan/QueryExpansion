@@ -9,6 +9,7 @@ use WOrig and 1-WOrig and weight associated with exp term to rerank docs
 import site
 site.addsitedir('/bos/usr0/cx/local/lib/python2.7/site-packages')
 site.addsitedir('/bos/usr0/cx/cxPylib')
+site.addsitedir('/bos/usr0/cx/PyCode/QueryExpansion')
 from cxBase.base import *
 from IndriRelate.IndriInferencer import *
 from IndriRelate.IndriPackedRes import *
