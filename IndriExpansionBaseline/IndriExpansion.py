@@ -34,6 +34,8 @@ class IndriExpansionC(QueryExpansionC):
             doc = lDoc[i]
             DocLen = lm.len
             for term in lm.hTermTF:
+                if "[OOV]" == term:
+                    continue
                 TF = lm.GetTF(term)
                 CTF = self.CtfCenter.GetCtfProb(term)
                 weight = math.log((TF + self.DirMu * CTF)/(DocLen + self.DirMu)) + doc.score
