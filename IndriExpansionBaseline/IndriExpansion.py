@@ -14,7 +14,7 @@ site.addsitedir('/bos/usr0/cx/cxPylib')
 site.addsitedir('/bos/usr0/cx/PyCode/Geektools')
 site.addsitedir('/bos/usr0/cx/PyCode/QueryExpansion')
 from base.ExpansionBase import *
-from operator import attributegetter
+from operator import attrgetter
 from CrossValidation.ParameterSet import *
 
 class IndriExpansionC(QueryExpansionC):
@@ -46,7 +46,7 @@ class IndriExpansionC(QueryExpansionC):
                     hExpTerm[term] = len(lExpTerm) - 1
                 lExpTerm[hExpTerm[term]].score += math.exp(weight)
             lExpTerm[hExpTerm[term]].score = math.log(lExpTerm[hExpTerm[term]].score)
-        lExpTerm.sort(key=attributegetter(score), reverse=True)
+        lExpTerm.sort(key=attrgetter(score), reverse=True)
         lExpTerm = lExpTerm[0:min(self.NumOfExpTerm,len(lExpTerm))]
         return lExpTerm
     
