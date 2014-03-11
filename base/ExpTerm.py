@@ -3,7 +3,7 @@ Created on Feb 17, 2014
 data structure for expansion terms
 @author: cx
 '''
-
+import json
 class ExpTermC:
     
     def Init(self):
@@ -24,6 +24,7 @@ class ExpTermC:
     def load(self,line):
         print "loading exp term line [%s]" %(line)
         vCol = line.strip().split('\t')
+        print json.dumps(vCol)
         self.qid = vCol[0]
         self.query = vCol[1]
         self.term = vCol[2]
