@@ -22,9 +22,9 @@ class ExpTermC:
     
     
     def load(self,line):
-        print "loading exp term line [%s]" %(line)
+#         print "loading exp term line [%s]" %(line)
         vCol = line.strip().split('\t')
-        print json.dumps(vCol)
+#         print json.dumps(vCol)
         self.qid = vCol[0]
         self.query = vCol[1]
         self.term = vCol[2]
@@ -52,7 +52,7 @@ class ExpTermC:
         return FeatureStr.strip(',')
     
     def dump(self):
-        line = self.qid + "\t" + self.query + '\t' + self.term + '\t' +'\t%f'%(self.score) + self.JoinFeatureStr() 
+        line = self.qid + "\t" + self.query + '\t' + self.term + '\t%f'%(self.score) + '\t' + self.JoinFeatureStr() 
         return line
     
     
