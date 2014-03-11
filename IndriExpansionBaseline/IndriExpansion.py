@@ -34,7 +34,7 @@ class IndriExpansionC(QueryExpansionC):
             for term in lm.hTermTF:
                 TF = lm.GetTF(term)
                 CTF = self.CtfCenter.GetCtfProb(term)
-                weight = (TF + self.DirMu * CTF)/(DocLen + self.DirMu) * doc.score
+                weight = math.log((TF + self.DirMu * CTF)/(DocLen + self.DirMu)) + doc.score
                 if not term in hExpTerm:
                     ExpTerm = ExpTermC()
                     ExpTerm.qid = qid
@@ -43,7 +43,8 @@ class IndriExpansionC(QueryExpansionC):
                     ExpTerm.score = 0
                     lExpTerm.append(ExpTerm)
                     hExpTerm[term] = len(lExpTerm) - 1
-                lExpTerm[hExpTerm[term]].score += weight
+                lExpTerm[hExpTerm[term]].score += math.exp(weight)
+            lExpTerm[hExpTerm[term]].score = math.log(lExpTerm[hExpTerm[term]].score)
         lExpTerm.sort(key=attributegetter(score), reverse=True)
         lExpTerm = lExpTerm[0:min(self.NumOfExpTerm,len(lExpTerm))]
         return lExpTerm
