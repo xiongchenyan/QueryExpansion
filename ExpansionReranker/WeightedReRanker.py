@@ -103,7 +103,7 @@ def OutReRankRes(qid,lReDoc):
     #output a indri out format
     lOut = []
     for i in range(len(lReDoc)):
-        lOut.append("%dsQ0 %s %d %f Expansion" %(qid,lReDoc[i].DocNo,i + 1,lReDoc[i].score))
+        lOut.append("%s Q0 %s %d %f Expansion" %(qid,lReDoc[i].DocNo,i + 1,lReDoc[i].score))
     return lOut    
     
     
