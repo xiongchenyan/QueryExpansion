@@ -45,8 +45,7 @@ class IndriExpansionC(QueryExpansionC):
                     ExpTerm.score = 0
                     lExpTerm.append(ExpTerm)
                     hExpTerm[term] = len(lExpTerm) - 1
-                lExpTerm[hExpTerm[term]].score += math.exp(weight)
-            lExpTerm[hExpTerm[term]].score = math.log(lExpTerm[hExpTerm[term]].score)
+                lExpTerm[hExpTerm[term]].score += math.exp(weight)            
         lExpTerm.sort(key=attrgetter(score), reverse=True)
         lExpTerm = lExpTerm[0:min(self.NumOfExpTerm,len(lExpTerm))]
         return lExpTerm
