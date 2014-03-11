@@ -44,29 +44,27 @@ class WeightedReRankerC:
         lLm = MakeLmForDocs(lDoc)
         
         lReDoc = []
-        lAllTerm = []
         query= lExpTerm[0].query
+        TotalExpWeight = 0
+        for i in range(len(lExpTerm)):            
+            TotalExpWeight += lExpTerm[i].score
         for i in range(len(lExpTerm)):
-            lAllTerm.append([lExpTerm[i].term,lExpTerm[i].score *(1 - self.WOrig)])
-#             lAllTerm[i][1] *= 1 - self.WOrig        
-        lQTerm = query.split()
-        for term in lQTerm:
-            lAllTerm.append([term,self.WOrig])        
-#         print "rerank with [%s]" %(json.dumps(lAllTerm))
+            #normalization
+            lExpTerm[i].score /= TotalExpWeight            
+
         for i in range(len(lDoc)):
-            score = 0
-            WeightSum = 0
-            for WTerm in lAllTerm:
+            OrigQScore = self.IndriInferencer.InferQuery(query, lLm[i], self.CtfCenter)            
+            ExpScore = 0
+            for WTerm in lExpTerm:
                 InferScore = self.IndriInferencer.InferTerm(WTerm[0],lLm[i], self.CtfCenter)
 #                 print 'term [%s]weight [%f] ' %(WTerm[0],WTerm[1])
 #                 print ' lm score [%f]' %(InferScore)
                 if InferScore != 0:
-                    score += math.log(InferScore) * WTerm[1]
-                WeightSum += WTerm[1]
-            score = score / WeightSum
+                    ExpScore += math.log(InferScore) * WTerm[1]            
+            TotalScore = self.WOrig * OrigQScore + (1-self.WOrig) * ExpScore            
             Doc = PackedIndriResC()
             Doc.DocNo = lDoc[i].DocNo
-            Doc.score = score
+            Doc.score = TotalScore
             lReDoc.append(Doc)
         lReDoc.sort(key=attrgetter('score'),reverse = True)
         return lReDoc
