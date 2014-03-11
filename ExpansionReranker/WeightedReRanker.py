@@ -19,7 +19,7 @@ import json
 class WeightedReRankerC:
     
     def Init(self):
-        self.IndriInferencer = LmInferencerC()
+        self.IndriInferencer = LmInferencerC('twostage')
         self.CtfCenter = TermCtfC()
         self.WOrig = 0.5
         
