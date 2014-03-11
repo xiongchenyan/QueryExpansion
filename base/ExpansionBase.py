@@ -63,7 +63,13 @@ class QueryExpansionC:
         return False
     
     
-    
+    def NormalizeExpTermWeight(self,lExpTerm):
+        Z = 0
+        for expterm in lExpTerm:
+            Z += expterm.score
+        for i in range(len(lExpTerm)):
+            lExpTerm[i] /= Z
+        return True
     
         
         
