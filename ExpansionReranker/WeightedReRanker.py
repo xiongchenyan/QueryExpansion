@@ -56,11 +56,11 @@ class WeightedReRankerC:
             OrigQScore = self.IndriInferencer.InferQuery(query, lLm[i], self.CtfCenter)            
             ExpScore = 0
             for WTerm in lExpTerm:
-                InferScore = self.IndriInferencer.InferTerm(WTerm[0],lLm[i], self.CtfCenter)
+                InferScore = self.IndriInferencer.InferTerm(WTerm.term,lLm[i], self.CtfCenter)
 #                 print 'term [%s]weight [%f] ' %(WTerm[0],WTerm[1])
 #                 print ' lm score [%f]' %(InferScore)
                 if InferScore != 0:
-                    ExpScore += math.log(InferScore) * WTerm[1]            
+                    ExpScore += math.log(InferScore) * WTerm.score            
             TotalScore = self.WOrig * OrigQScore + (1-self.WOrig) * ExpScore            
             Doc = PackedIndriResC()
             Doc.DocNo = lDoc[i].DocNo
