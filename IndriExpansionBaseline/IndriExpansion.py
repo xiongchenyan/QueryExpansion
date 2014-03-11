@@ -11,8 +11,8 @@ output a list of terms (can be used to re-rank, can also be used as a feature)
 import site
 site.addsitedir('/bos/usr0/cx/local/lib/python2.7/site-packages')
 site.addsitedir('/bos/usr0/cx/cxPylib')
-site.addsitedir('/bos/usr0/cx/cxPylib/Geektools')
-site.addsitedir('/bos/usr0/cx/cxPylib/QueryExpansion')
+site.addsitedir('/bos/usr0/cx/PyCode/Geektools')
+site.addsitedir('/bos/usr0/cx/PyCode/QueryExpansion')
 from base.ExpansionBase import *
 from operator import attributegetter
 from CrossValidation.ParameterSet import *
