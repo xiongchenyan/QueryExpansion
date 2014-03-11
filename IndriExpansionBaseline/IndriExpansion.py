@@ -69,7 +69,7 @@ def IndriExpansionUnitTest(ConfIn):
     CashDir = conf.GetConf("cashdir")
     NumOfIndriRes = int(conf.GetConf("prfdocnum"))
     
-    Out = open(ExpTermOut,'w')
+    out = open(ExpTermOut,'w')
     for line in open(QIn):
         line = line.strip()
         qid,query = line.split('\t')
