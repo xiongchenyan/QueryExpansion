@@ -22,6 +22,7 @@ class ExpTermC:
     
     
     def load(self,line):
+        print "loading exp term line [%s]" %(line)
         vCol = line.strip().split('\t')
         self.qid = vCol[0]
         self.query = vCol[1]
