@@ -64,10 +64,10 @@ class IndriExpansionC(QueryExpansionC):
 def IndriExpansionUnitTest(ConfIn):
     IndriExpansion = IndriExpansionC(ConfIn)
     conf = cxConf(ConfIn)
-    QIn = conf.LoadConf("in")
-    ExpTermOut = conf.LoadConf("out")
-    CashDir = conf.LoadConf("cashdir")
-    NumOfIndriRes = int(conf.LoadConf("prfdocnum"))
+    QIn = conf.GetConf("in")
+    ExpTermOut = conf.GetConf("out")
+    CashDir = conf.GetConf("cashdir")
+    NumOfIndriRes = int(conf.GetConf("prfdocnum"))
     
     Out = open(ExpTermOut,'w')
     for line in open(QIn):

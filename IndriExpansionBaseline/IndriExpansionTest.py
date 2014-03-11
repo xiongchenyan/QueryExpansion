@@ -10,7 +10,7 @@ import sys
 
 
 if 2 != len(sys.argv):
-    print "1 conf:in\nout\ncashdir\nprfdocnum\ndirmu\nnumofexpterm\nctfpath"
+    print "1 conf:\nin\nout\ncashdir\nprfdocnum\ndirmu\nnumofexpterm\nctfpath"
     sys.exit()
     
     
