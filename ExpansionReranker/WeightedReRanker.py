@@ -48,9 +48,10 @@ class WeightedReRankerC:
         TotalExpWeight = 0
         for i in range(len(lExpTerm)):            
             TotalExpWeight += lExpTerm[i].score
-        for i in range(len(lExpTerm)):
-            #normalization
-            lExpTerm[i].score /= TotalExpWeight            
+        if 0 != TotalExpWeight:
+            for i in range(len(lExpTerm)):
+                #normalization
+                lExpTerm[i].score /= TotalExpWeight            
 
         for i in range(len(lDoc)):
             OrigQScore = self.IndriInferencer.InferQuery(query, lLm[i], self.CtfCenter)            
