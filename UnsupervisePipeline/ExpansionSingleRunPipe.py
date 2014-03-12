@@ -96,7 +96,7 @@ class ExpansionSingleRunPipeC:
         lReRankedDoc = WeightedReRanker.ReRank(lDoc, lExpTerm)
         print "re ranking done"
         #evaluation
-        EvaMeasure = AdhocEva.EvaluatePerQ(qid, AdhocEva.SegDocNoFromDocs(lDoc))
+        EvaMeasure = AdhocEva.EvaluatePerQ(qid, AdhocEva.SegDocNoFromDocs(lReRankedDoc))
         print "eva done"
         return EvaMeasure
     
