@@ -139,7 +139,7 @@ class ExpansionSingleRunPipeC:
         #must run after process
         if len(self.lEvaRes) == 0:
             print "pick best para need to run process first"
-            return False
+            return -1,-1,-1
         BestMapP = 0
         BestNdcgP = 0
         BestErrP = 0

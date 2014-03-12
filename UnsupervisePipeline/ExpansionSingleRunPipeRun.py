@@ -16,6 +16,7 @@ if 2 != len(sys.argv):
     
     
 SingleRunPipe = ExpansionSingleRunPipeC(sys.argv[1])
+SingleRunPipe.Process()
 BestMapP,BestNdcgP,BestErrP = SingleRunPipe.PickBestParaSet()
 
 print "best map para [%s][%f]" %(SingleRunPipe.lParaSet[BestMapP],SingleRunPipe.lEvaRes[BestMapP].map)
