@@ -160,7 +160,7 @@ class ExpansionSingleRunPipeC:
     def OutPerQPerParaRes(self,lQid,lQuery,llOveralEvaRes):
         
         for ParaP in range(len(self.lParaSet)):
-            out = open(self.EvaOutDir + "/" + ParaP.dumps(),'w')
+            out = open(self.EvaOutDir + "/" + self.lParaSet[ParaP].dumps(),'w')
             para = self.lParaSet[ParaP]
             EvaMean = AdhocMeasureC()
             for QIndex in range(len(lQid)):
