@@ -46,6 +46,9 @@ class WeightedReRankerC:
     def ReRank(self,lDoc,lExpTerm):
         #return a lReDoc, PackedIndriRes but with only DocNo and Score setted
         print "start reranking for q [%s] doc num [%d], expterm num [%d]" %(lExpTerm[0].query,len(lDoc),len(lExpTerm))
+        for ExpTerm in lExpTerm:
+            print ExpTerm.term + "\t%f" %(ExpTerm.score)
+        
         
         lLm = MakeLmForDocs(lDoc)
         

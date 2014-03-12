@@ -4,6 +4,9 @@ data structure for expansion terms
 @author: cx
 '''
 import json,math
+from json import JSONEncoder
+
+
 class ExpTermC:
     
     def Init(self):
