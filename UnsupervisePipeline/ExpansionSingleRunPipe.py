@@ -35,6 +35,7 @@ class ExpansionSingleRunPipeC:
         self.ConfIn = ""
         self.lParaSet = []
         self.lEvaRes = []
+        self.NumOfReRankDoc = 50
         return
     
     
@@ -45,6 +46,7 @@ class ExpansionSingleRunPipeC:
         self.QueryIn = conf.GetConf('in')
         self.EvaOutDir = conf.GetConf('evaoutdir')
         self.CtfPath = conf.GetConf('ctfpath')
+        self.NumOfReRankDoc = int(conf.GetConf('rerankdepth'))
         if not os.path.exists(self.EvaOutDir):
             os.makedirs(self.EvaOutDir)
         self.lParaSet = ReadParaSet(conf.GetConf('paraset'))
@@ -67,7 +69,7 @@ class ExpansionSingleRunPipeC:
             #record performance
         #return llEvaRes, the performance of this qid at all paras                
         lEvaRes = []        
-        lDoc = ReadPackedIndriRes(self.CashDir + '/' + query)        
+        lDoc = ReadPackedIndriRes(self.CashDir + '/' + query,self.NumOfReRankDoc)        
         for ParaSet in self.lParaSet:
             lEvaRes.append(self.ProcessPerQWithOnePara(qid, query, lDoc, ParaSet))        
         return lEvaRes 
