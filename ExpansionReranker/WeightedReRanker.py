@@ -78,6 +78,9 @@ class WeightedReRankerC:
             Doc.score = TotalScore
             lReDoc.append(Doc)
         lReDoc.sort(key=attrgetter('score'),reverse = True)
+        
+        print "rerank res:\n%s" %(json.dumps(lReDoc,indent=1))
+        
         return lReDoc
         
     
