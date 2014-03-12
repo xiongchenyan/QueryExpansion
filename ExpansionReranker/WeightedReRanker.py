@@ -9,12 +9,14 @@ use WOrig and 1-WOrig and weight associated with exp term to rerank docs
 import site
 site.addsitedir('/bos/usr0/cx/local/lib/python2.7/site-packages')
 site.addsitedir('/bos/usr0/cx/cxPylib')
+site.addsitedir('/bos/usr0/cx/PyCode/Geektools')
 site.addsitedir('/bos/usr0/cx/PyCode/QueryExpansion')
 from cxBase.base import *
 from IndriRelate.IndriInferencer import *
 from IndriRelate.IndriPackedRes import *
 from operator import attrgetter
 from base.ExpTerm import *
+from CrossValidation.ParameterSet import *
 import json
 class WeightedReRankerC:
     
@@ -35,7 +37,11 @@ class WeightedReRankerC:
         if "" != ConfIn:
             self.SetConf(ConfIn)
             
-            
+    def SetParameter(self,ParaSet):
+        if "worig" in ParaSet.hPara:
+            self.WOrig = float(ParaSet.hPara['worig'])
+        return True
+                
     
     def ReRank(self,lDoc,lExpTerm):
         #return a lReDoc, PackedIndriRes but with only DocNo and Score setted
