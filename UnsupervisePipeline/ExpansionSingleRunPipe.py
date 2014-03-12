@@ -149,7 +149,7 @@ class ExpansionSingleRunPipeC:
         for i in range(len(self.lEvaRes)):
             if self.lEvaRes[i].map > self.lEvaRes[BestMapP].map:
                 BestMapP = i
-            if self.lEvaRes[i].ndcg > self.lEvaRes[BestNdcgP].bdcg:
+            if self.lEvaRes[i].ndcg > self.lEvaRes[BestNdcgP].ndcg:
                 BestNdcgP = i
             if self.lEvaRes[i].err > self.lEvaRes[BestErrP].err:
                 BestErrP = i                
