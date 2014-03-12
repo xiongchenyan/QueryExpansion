@@ -63,6 +63,7 @@ class IndriExpansionC(QueryExpansionC):
             self.DirMu = ParaSet.hPara['dirmu']
         if 'prfdocnum' in ParaSet.hPara:
             self.PrfDocNum = ParaSet.hPara['prfdocnum']
+        print "set para as: numofexpterm[%f] dirmu [%f] prfdocnum [%f]" %(self.NumOfExpTerm,self.DirMu,self.PrfDocNum)
         return True
         
     
