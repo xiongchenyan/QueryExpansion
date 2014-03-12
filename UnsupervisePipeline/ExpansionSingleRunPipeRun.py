@@ -11,7 +11,7 @@ import sys
 
 
 if 2 != len(sys.argv):
-    print "1 para: conf\ncashdir\nin\nevaoutdir\nctfpath\nparaset\nqrel\nevadepth\nworig\nnumofexpterm\ndirmuprfdocnum\n"
+    print "1 para: conf\ncashdir\nin\nevaoutdir\nctfpath\nparaset\nqrel\nevadepth\nworig\nnumofexpterm\ndirmu\nprfdocnum\n"
     sys.exit()
     
     
