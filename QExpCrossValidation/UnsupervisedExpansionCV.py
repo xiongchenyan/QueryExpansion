@@ -36,7 +36,7 @@ class UnsupervisedExpansionCVC:
         conf = cxConf(ConfIn)
         self.OutDir = conf.GetConf("evaoutdir")
         self.QueryInName = conf.GetConf('in')
-        self.FoldNum = int(conf.GetCon('k'))
+        self.FoldNum = int(conf.GetConf('k'))
         self.lPara = ReadParaSet(conf.GetConf('paraset'))
         if not os.path.exists(self.OutDir):
             os.makedirs(self.OutDir)
