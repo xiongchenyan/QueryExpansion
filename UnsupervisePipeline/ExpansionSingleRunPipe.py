@@ -139,8 +139,6 @@ class ExpansionSingleRunPipeC:
     
     def ProcessWithLoadQ(self,lQid,lQuery):
         llOveralEvaRes = []
-        lQid = []
-        lQuery = []
         self.lQid = lQid
         self.lQuery = lQuery
         for i in range(len(lQid)):
@@ -182,7 +180,7 @@ class ExpansionSingleRunPipeC:
     def OutPerQPerParaRes(self,lQid,lQuery,llOveralEvaRes):
         if not os.path.exists(self.EvaOutDir):
             os.makedirs(self.EvaOutDir)
-        print "outputing:\n%s" %(json.dumps(lQid,indent=1))
+#         print "outputing:\n%s" %(json.dumps(lQid,indent=1))
         for ParaP in range(len(self.lParaSet)):
             out = open(self.EvaOutDir + "/" + self.lParaSet[ParaP].dumps(),'w')
             para = self.lParaSet[ParaP]
