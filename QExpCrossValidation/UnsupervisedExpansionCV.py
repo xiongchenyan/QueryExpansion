@@ -72,7 +72,7 @@ class UnsupervisedExpansionCVC:
         
         
         lTestFoldRes = []
-        for mea in range(llTestMeasure):
+        for mea in range(len(llTestMeasure)):
             lTestFoldRes.append(mea[0]) #only one dim for TestPara
                 
         return lTestFoldRes,TestPara
