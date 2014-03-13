@@ -202,7 +202,7 @@ class ExpansionSingleRunPipeC:
         if not os.path.exists(self.EvaOutDir):
             os.makedirs(self.EvaOutDir)     
         out = open(self.EvaOutDir + "/MeanVsPara",'w')
-        
+        self.lEvaRes = []
         for ParaP in range(len(self.lParaSet)):
             EvaMean = AdhocMeasureC()
             para = self.lParaSet[ParaP]
