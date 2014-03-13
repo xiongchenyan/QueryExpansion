@@ -52,6 +52,9 @@ class UnsupervisedExpansionCVC:
         #get eva res in lTest
         #out: per q eva res of lTest
         
+        
+        print "start train:\n%stest:\n%s" %(json.dumps(lTrainQuery),json.dumps(lTestQuery))
+        
         #train
         self.SingleRunPipe.lParaSet = self.lPara
         self.SingleRunPipe.EvaOutDir = self.EvaOutDir + "/train_%d" %(FoldInd)
