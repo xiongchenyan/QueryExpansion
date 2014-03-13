@@ -121,6 +121,7 @@ class UnsupervisedExpansionCVC:
         
         llTrainQid,llTrainQuery,llTestQid,llTestQuery = self.ReadAndPartitionQuery()
         MeanEva = AdhocMeasureC()
+        cnt = 0
         for i in range(self.FoldNum):
             lTrainQid, lTrainQuery, lTestQid, lTestQuery = llTrainQid[i],llTrainQuery[i],llTestQid[i],llTestQuery[i] 
             lTestFoldRes,TestPara = self.ProcessOneFold(lTrainQid, lTrainQuery, lTestQid, lTestQuery, i)
@@ -129,8 +130,9 @@ class UnsupervisedExpansionCVC:
                 print >> EvaOut,lTestQid[QInd] + "\t" + lTestFoldRes[QInd].dumps(False)
                 print >> AppliedParaOut, lTestQid[QInd] + "\t" + TestPara.dumps()
                 MeanEva = MeanEva + lTestFoldRes[QInd]
+                cnt += 1
                 
-        
+        MeanEva = MeanEva / cnt 
         print >> EvaOut,"mean\t%s" %(MeanEva.dumps())
         
         EvaOut.close()
