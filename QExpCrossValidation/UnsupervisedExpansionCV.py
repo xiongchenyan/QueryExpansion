@@ -19,7 +19,7 @@ from CrossValidation.RandomSplit import *
 class UnsupervisedExpansionCVC:
     
     def Init(self):
-        self.OutDir = ""
+        self.EvaOutDir = ""
         self.QueryInName = ""
         self.lPara = [] #to explore para sets
         self.FoldNum = 5
@@ -34,12 +34,12 @@ class UnsupervisedExpansionCVC:
     
     def SetConf(self,ConfIn):
         conf = cxConf(ConfIn)
-        self.OutDir = conf.GetConf("evaoutdir")
+        self.EvaOutDir = conf.GetConf("evaoutdir")
         self.QueryInName = conf.GetConf('in')
         self.FoldNum = int(conf.GetConf('k'))
         self.lPara = ReadParaSet(conf.GetConf('paraset'))
-        if not os.path.exists(self.OutDir):
-            os.makedirs(self.OutDir)
+        if not os.path.exists(self.EvaOutDir):
+            os.makedirs(self.EvaOutDir)
         self.SingleRunPipe.SetConf(ConfIn)
         return True
     
@@ -54,7 +54,7 @@ class UnsupervisedExpansionCVC:
         
         #train
         self.SingleRunPipe.lParaSet = self.lPara
-        self.SingleRunPipe.EvaOutDir = self.OutDir + "/train_%d" %(FoldInd)
+        self.SingleRunPipe.EvaOutDir = self.EvaOutDir + "/train_%d" %(FoldInd)
         
         self.SingleRunPipe.ProcessWithLoadQ(lTrainQid, lTrainQuery)
         BestMapP,BestNdcgP,BestErrP = self.SingleRunPipe.PickBestParaSet()
@@ -64,7 +64,7 @@ class UnsupervisedExpansionCVC:
         
         #test
         self.SingleRunPipe.lParaSet = [TestPara]
-        self.EvaOutDir = self.OutDir + '/test_%d' %(FoldInd)
+        self.EvaOutDir = self.EvaOutDir + '/test_%d' %(FoldInd)
         llTestMeasure = self.SingleRunPipe.ProcessWithLoadQ(lTestQid, lTestQuery)
         
         
@@ -131,8 +131,7 @@ class UnsupervisedExpansionCVC:
         print >> EvaOut,"mean\t%s" %(MeanEva.dumps())
         
         EvaOut.close()
-        AppliedParaOut.close()
-        
+        AppliedParaOut.close()        
         return True
                 
             
