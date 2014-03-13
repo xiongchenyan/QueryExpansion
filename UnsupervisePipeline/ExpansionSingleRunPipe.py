@@ -137,6 +137,28 @@ class ExpansionSingleRunPipeC:
         return True
     
     
+    def ProcessWithLoadQ(self,lQid,lQuery):
+        llOveralEvaRes = []
+        lQid = []
+        lQuery = []
+        self.lQid = lQid
+        self.lQuery = lQuery
+        for i in range(len(lQid)):
+            qid = lQid[i]
+            query = lQuery[i]
+            lEvaRes = self.ProcessPerQ(qid, query)
+            llOveralEvaRes.append(lEvaRes)
+            
+        print "runs finished, wrap up evaluation results"
+        self.OutPerQPerParaRes(lQid,lQuery,llOveralEvaRes)
+        self.OutMeanPerPara(llOveralEvaRes) 
+        
+        
+        print "this set of query finished"        
+        return llOveralEvaRes
+        
+    
+    
     def PickBestParaSet(self):
         #must run after process
         if len(self.lEvaRes) == 0:
@@ -158,7 +180,8 @@ class ExpansionSingleRunPipeC:
     
     
     def OutPerQPerParaRes(self,lQid,lQuery,llOveralEvaRes):
-        
+        if not os.path.exists(self.EvaOutDir):
+            os.makedirs(self.EvaOutDir)
         for ParaP in range(len(self.lParaSet)):
             out = open(self.EvaOutDir + "/" + self.lParaSet[ParaP].dumps(),'w')
             para = self.lParaSet[ParaP]
@@ -176,7 +199,9 @@ class ExpansionSingleRunPipeC:
         return True
     
     
-    def OutMeanPerPara(self,llOveralEvaRes):        
+    def OutMeanPerPara(self,llOveralEvaRes):   
+        if not os.path.exists(self.EvaOutDir):
+            os.makedirs(self.EvaOutDir)     
         out = open(self.EvaOutDir + "/MeanVsPara",'w')
         
         for ParaP in range(len(self.lParaSet)):
