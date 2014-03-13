@@ -61,7 +61,7 @@ class UnsupervisedExpansionCVC:
         
         self.SingleRunPipe.ProcessWithLoadQ(lTrainQid, lTrainQuery)
         BestMapP,BestNdcgP,BestErrP = self.SingleRunPipe.PickBestParaSet()
-        
+        print "best map p: %d\nbest ndcg p:%d\nbest err p:%d"%(BestMapP,BestNdcgP,BestErrP)
         #choose ndcg for now
         TestPara =  copy.deepcopy(self.SingleRunPipe.lParaSet[BestNdcgP])
         
