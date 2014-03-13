@@ -67,7 +67,7 @@ class UnsupervisedExpansionCVC:
         
         #test
         self.SingleRunPipe.lParaSet = [TestPara]
-        self.EvaOutDir = self.EvaOutDir + '/test_%d' %(FoldInd)
+        self.SingleRunPipe.EvaOutDir = self.EvaOutDir + '/test_%d' %(FoldInd)
         llTestMeasure = self.SingleRunPipe.ProcessWithLoadQ(lTestQid, lTestQuery)
         
         
