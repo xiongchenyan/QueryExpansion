@@ -126,9 +126,9 @@ class UnsupervisedExpansionCVC:
             lTestFoldRes,TestPara = self.ProcessOneFold(lTrainQid, lTrainQuery, lTestQid, lTestQuery, i)
             
             for QInd in range(len(lTestQid)):
-                print >> EvaOut,lTestQid[QInd] + "\t" + lTestFoldRes[i].dumps(False)
+                print >> EvaOut,lTestQid[QInd] + "\t" + lTestFoldRes[QInd].dumps(False)
                 print >> AppliedParaOut, lTestQid[QInd] + "\t" + TestPara.dumps()
-                MeanEva = MeanEva + lTestFoldRes[i]
+                MeanEva = MeanEva + lTestFoldRes[QInd]
                 
         
         print >> EvaOut,"mean\t%s" %(MeanEva.dumps())
