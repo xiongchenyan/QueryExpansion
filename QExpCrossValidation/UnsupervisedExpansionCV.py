@@ -117,7 +117,7 @@ class UnsupervisedExpansionCVC:
         AppliedParaOut = open(self.EvaOutDir + "/CVPara",'w')
         
         llTrainQid,llTrainQuery,llTestQid,llTestQuery = self.ReadAndPartitionQuery()
-        MeanEva = AdhocEvaMeasureC()
+        MeanEva = AdhocMeasureC()
         for i in range(self.FoldNum):
             lTrainQid, lTrainQuery, lTestQid, lTestQuery = llTrainQid[i],llTrainQuery[i],llTestQid[i],llTestQuery[i] 
             lTestFoldRes,TestPara = self.ProcessOneFold(lTrainQid, lTrainQuery, lTestQid, lTestQuery, i)
