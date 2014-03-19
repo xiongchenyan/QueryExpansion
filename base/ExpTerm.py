@@ -118,7 +118,38 @@ def ReadQExpTerms(InName):
     
     
     
+def MinMaxFeatureNormalize(lExpTerm):
+    #get min max for each feature dimension
+    hMin = {}
+    hMax = {}
+    for ExpTerm in lExpTerm:
+        for feature in ExpTerm.hFeature:
+            value = ExpTerm.hFeature[feature]
+            if not feature in hMin:
+                hMin[feature] = value
+            if not feature in hMax:
+                hMax[feature] = value
+            hMin[feature] = min(hMin[feature],value)
+            hMax[feature] = max(hMax[feature],value)
     
+    
+    #min-max normalization
+    #if min==max then set to 0
+    
+    for i in range(len(lExpTerm)):
+        for feature in lExpTerm[i].hFeature:
+            fMin = hMin[feature]
+            fMax = hMax[feature]
+            
+            if fMin == fMax:
+                lExpTerm[i].hFeature[feature] = 0
+                continue
+            lExpTerm[i].hFeature[feature] = (lExpTerm[i].hFeature[feature] - fMin)/(fMax - fMin)
+    
+    return True
+            
+            
+                
     
     
     
