@@ -32,7 +32,7 @@ class ExpTermC:
         self.query = vCol[1]
         self.term = vCol[2]
         if len(vCol) > 3:
-            self.score = math.exp(float(vCol[3]))            
+            self.score = float(vCol[3])            
         if len(vCol) > 4:
             self.SetFeature(vCol[4])
         return True
@@ -55,7 +55,7 @@ class ExpTermC:
         return FeatureStr.strip(',')
     
     def dump(self):
-        line = self.qid + "\t" + self.query + '\t' + self.term + '\t%f'%(math.log(self.score)) + '\t' + self.JoinFeatureStr() 
+        line = self.qid + "\t" + self.query + '\t' + self.term + '\t%f'%(self.score) + '\t' + self.JoinFeatureStr() 
         return line
     
     
