@@ -23,7 +23,7 @@ class MixtureModelExpansionC(QueryExpansionC):
         self.Lambda = 0.5
         self.MaxEmIte = 100
         self.EMTerminate = 0.01
-        
+        self.CandidateTermMinTF = 3
         
     def SetConf(self,ConfIn):
         MixtureModelExpansionC.ShowConf()
@@ -71,13 +71,13 @@ class MixtureModelExpansionC(QueryExpansionC):
         print "doc lm made"        
         lExpTerm = self.FormRawExpTermFromLm(qid, query, lLm)
         
-        #only choose top 10 for testing
-#         lExpTerm.sort(key=attrgetter('score'),reverse = True)
-#         lExpTerm = lExpTerm[:10]        
         print "formed [%d] candidate expansion term" %(len(lExpTerm))     
         lExpTerm = self.EM(lLm,lExpTerm)         
         lExpTerm.sort(key=attrgetter('score'),reverse=True)                                   
         return lExpTerm[:self.NumOfExpTerm]
+    
+    
+
         
     
     def EM(self,lLm,lExpTerm):
@@ -156,7 +156,15 @@ class MixtureModelExpansionC(QueryExpansionC):
                     lExpTerm.append(ExpTerm)
                 p = hExpTerm[term]
                 lExpTerm[p].score += TF
-                Z += TF
+#                 Z += TF
+        
+        #discard term with TF < 3
+        lMidTerm = []
+        for i in range(len(lExpTerm)):
+            if lExpTerm[i].score >= self.CandidateTermMinTF:
+                lMidTerm.append(lExpTerm[i])
+                Z += lExpTerm[i].score
+        lExpTerm  = lMidTerm           
                 
         for i in range(len(lExpTerm)):
             lExpTerm[i].score /= float(Z)
