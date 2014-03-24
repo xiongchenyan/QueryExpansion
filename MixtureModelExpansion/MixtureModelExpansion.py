@@ -95,6 +95,7 @@ class MixtureModelExpansionC(QueryExpansionC):
             print "M step..."
             lExpTerm = self.M(lThisTw,lLm,lExpTerm)            
             IteNum += 1           
+            lLastTw = lThisTw
         print "EM finished [%d]" %(IteNum)
         return lExpTerm
     
