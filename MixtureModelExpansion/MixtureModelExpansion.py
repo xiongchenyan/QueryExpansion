@@ -14,6 +14,8 @@ from operator import attrgetter
 from CrossValidation.ParameterSet import *
 from IndriRelate.IndriInferencer import *
 import math
+from operator import attrgetter
+import json
 
 class MixtureModelExpansionC(QueryExpansionC):
     def Init(self):
@@ -68,8 +70,13 @@ class MixtureModelExpansionC(QueryExpansionC):
         lLm = MakeLmForDocs(lDoc)
         print "doc lm made"        
         lExpTerm = self.FormRawExpTermFromLm(qid, query, lLm)
+        
+        #only choose top 10 for testing
+        lExpTerm.sort(key=attrgetter('score'),reverse = True)
+        lExpTerm = lExpTerm[:10]        
         print "formed [%d] candidate expansion term" %(len(lExpTerm))     
-        lExpTerm = self.EM(lLm,lExpTerm)                                            
+        lExpTerm = self.EM(lLm,lExpTerm)         
+        lExpTerm.sort(key=attrgetter('score'),reverse=True)                                   
         return lExpTerm[:self.NumOfExpTerm]
         
     
@@ -98,6 +105,7 @@ class MixtureModelExpansionC(QueryExpansionC):
             term = lExpTerm[i].term
             CorpP = self.CtfCenter.GetCtfProb(term)
             lTw[i] = (1 - self.Lambda)*lExpTerm[i].score / ((1 - self.Lambda)*lExpTerm[i].score + self.Lambda * CorpP)
+        print "E step res\n" %(json.dumps(lTw))
         return lTw
     
     def M(self,lTw,lLm,lExpTerm):
@@ -131,6 +139,8 @@ class MixtureModelExpansionC(QueryExpansionC):
         Z = 0
         for Lm in lLm:
             for term in Lm.hTermTF:
+                if term.lower() == '[oov]':
+                    continue
                 TF = Lm.GetTF(term)
                 if not term in hExpTerm:
                     hExpTerm[term] = len(lExpTerm)
