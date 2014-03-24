@@ -72,8 +72,8 @@ class MixtureModelExpansionC(QueryExpansionC):
         lExpTerm = self.FormRawExpTermFromLm(qid, query, lLm)
         
         #only choose top 10 for testing
-        lExpTerm.sort(key=attrgetter('score'),reverse = True)
-        lExpTerm = lExpTerm[:10]        
+#         lExpTerm.sort(key=attrgetter('score'),reverse = True)
+#         lExpTerm = lExpTerm[:10]        
         print "formed [%d] candidate expansion term" %(len(lExpTerm))     
         lExpTerm = self.EM(lLm,lExpTerm)         
         lExpTerm.sort(key=attrgetter('score'),reverse=True)                                   
