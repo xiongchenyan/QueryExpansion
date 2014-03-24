@@ -105,9 +105,10 @@ class MixtureModelExpansionC(QueryExpansionC):
         for i in range(len(lExpTerm)):
             term = lExpTerm[i].term
             CorpP = self.CtfCenter.GetCtfProb(term)
-            if CorpP == 0:
-                print "term [%s] cdf [%f]" %(term,CorpP)
-            lTw[i] = (1 - self.Lambda)*lExpTerm[i].score / ((1 - self.Lambda)*lExpTerm[i].score + self.Lambda * CorpP)
+            if (lExpTerm[i].score == 0) &(CorpP == 0):
+                lTw[i] = 0
+            else:
+                lTw[i] = (1 - self.Lambda)*lExpTerm[i].score / ((1 - self.Lambda)*lExpTerm[i].score + self.Lambda * CorpP)
         print "E step res\n%s" %(json.dumps(lTw))
         return lTw
     
