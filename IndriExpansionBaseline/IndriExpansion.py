@@ -56,15 +56,7 @@ class IndriExpansionC(QueryExpansionC):
         
         return lExpTerm
     
-    def SetParameter(self,ParaSet):
-        if 'numofexpterm' in ParaSet.hPara:
-            self.NumOfExpTerm = ParaSet.hPara['numofexpterm']
-        if 'dirmu' in ParaSet.hPara:
-            self.DirMu = ParaSet.hPara['dirmu']
-        if 'prfdocnum' in ParaSet.hPara:
-            self.PrfDocNum = ParaSet.hPara['prfdocnum']
-        print "set para as: numofexpterm[%f] dirmu [%f] prfdocnum [%f]" %(self.NumOfExpTerm,self.DirMu,self.PrfDocNum)
-        return True
+
         
     
     

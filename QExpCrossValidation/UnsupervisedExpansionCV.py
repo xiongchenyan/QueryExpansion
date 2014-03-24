@@ -16,7 +16,7 @@ from CrossValidation.ParameterSet import *
 from CrossValidation.RandomSplit import *
 
 
-class UnsupervisedExpansionCVC:
+class UnsupervisedExpansionCVC(object):
     
     def Init(self):
         self.EvaOutDir = ""
@@ -43,6 +43,11 @@ class UnsupervisedExpansionCVC:
         self.SingleRunPipe.SetConf(ConfIn)
         return True
     
+    
+    @staticmethod
+    def ShowConf():
+        ExpansionSingleRunPipeC.ShowConf()
+        print "evaoutdir\nin\nk\nparaset"
     
     
     

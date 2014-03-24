@@ -153,34 +153,7 @@ def MinMaxFeatureNormalize(lExpTerm):
             
             
                 
-    
-def FeatureCorrelationAnalysis(lExpTerm):
-    #get all feature name
-        #record all score
-    #for each feature  get all its value's, in order, if not exist, add 0
-    #get pearson  
-    
-    
-    hFeatureValue = {}
-    lScore = []
-    
-    for ExpTerm in lExpTerm:
-        lScore.append(ExpTerm.score)
-        for feature in ExpTerm.hFeature:
-            hFeatureValue[feature] = []
-    
-    for ExpTerm in lExpTerm:
-        for feature in hFeatureValue:
-            value = 0
-            if feature in ExpTerm.hFeature:
-                value = ExpTerm.hFeature[feature]
-            hFeatureValue[feature].append(value)
-    
-    hFeaturePearson = {}
-    for feature in hFeatureValue:
-        hFeaturePearson[feature] = pearson(lScore,hFeatureValue[feature])
-        
-    return hFeaturePearson
+  
         
     
     

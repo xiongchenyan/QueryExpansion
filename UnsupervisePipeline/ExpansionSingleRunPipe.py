@@ -3,6 +3,10 @@ Created on Mar 11, 2014
 single run:
 input: a ParaSet (or a list)
 output: evaluation value (mean and per q's)
+
+
+mar 23 2014,
+added mixture model expansion method, the method is selected by new conf ExpansionMethod
 @author: cx
 '''
 
@@ -23,6 +27,7 @@ from AdhocEva.AdhocEva import *
 from AdhocEva.AdhocMeasure import *
 from IndriExpansionBaseline.IndriExpansion import *
 from ExpansionReranker.WeightedReRanker import *
+from MixtureModelExpansion.MixtureModelExpansion import *
 import os,json
 
 class ExpansionSingleRunPipeC:
@@ -36,6 +41,7 @@ class ExpansionSingleRunPipeC:
         self.lParaSet = []
         self.lEvaRes = []
         self.NumOfReRankDoc = 50
+        self.ExpansionMethod = 'rm'
         return
     
     
@@ -47,6 +53,9 @@ class ExpansionSingleRunPipeC:
         self.EvaOutDir = conf.GetConf('evaoutdir')
         self.CtfPath = conf.GetConf('ctfpath')
         self.NumOfReRankDoc = int(conf.GetConf('rerankdepth'))
+        
+        self.ExpansionMethod = conf.GetConf('expmethod')
+        
         if not os.path.exists(self.EvaOutDir):
             os.makedirs(self.EvaOutDir)
         self.lParaSet = ReadParaSet(conf.GetConf('paraset'))
@@ -60,7 +69,9 @@ class ExpansionSingleRunPipeC:
         return
     
     
-    
+    @staticmethod
+    def ShowConf():
+        print "cashdir\nin\nevaoutdir\nctfpath\nrerankdepth\nparaset\nexpmethod rm|mix"
     
     def ProcessPerQ(self,qid,query):
         #load ldocs
@@ -79,18 +90,24 @@ class ExpansionSingleRunPipeC:
         EvaMeasure = AdhocMeasureC()
         
         #set parameters
-        IndriExpansion = IndriExpansionC(self.ConfIn)
+        ExpansionCenter = QueryExpansionC()
+        if self.ExpansionMethod == 'rm':
+            ExpansionCenter = IndriExpansionC(self.ConfIn)
+        if self.ExpansionMethod == 'mix':
+            ExpansionCenter = MixtureModelExpansionC(self.ConfIn)
+            
+            
         WeightedReRanker = WeightedReRankerC(self.ConfIn)
         AdhocEva = AdhocEvaC(self.ConfIn)
         
-        IndriExpansion.SetParameter(ParaSet)
+        ExpansionCenter.SetParameter(ParaSet)
         WeightedReRanker.SetParameter(ParaSet)
         #AdhocEva not parameter to switch
         
         print "start run [%s][%s] with para [%s]" %(qid,query,json.dumps(ParaSet.__dict__))
         
         #expand
-        lExpTerm = IndriExpansion.Process(qid, query, lDoc)
+        lExpTerm = ExpansionCenter.Process(qid, query, lDoc)
         print "exp done"
         #reranking
         lReRankedDoc = WeightedReRanker.ReRank(lDoc, lExpTerm)

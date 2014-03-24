@@ -26,7 +26,7 @@ from ExpTerm import *
 from cxBase.base import cxConf
 from IndriRelate.IndriInferencer import *
 
-class QueryExpansionC:
+class QueryExpansionC(object):
     
     def Init(self):
    #     self.WOrig = 0.5
@@ -50,9 +50,9 @@ class QueryExpansionC:
         self.PrfDocNum = int(conf.GetConf('prfdocnum'))
         self.CtfCenter.Load(conf.GetConf("ctfpath"))
         return True
-    
-    def ShowConf(self):
-        print "dirmu\nnumofexpterm\nctfpath"
+    @staticmethod
+    def ShowConf():
+        print "dirmu\nnumofexpterm\nctfpath\nprfdocnum"
         return True
     
     
@@ -71,6 +71,15 @@ class QueryExpansionC:
             lExpTerm[i] /= Z
         return True
     
+    def SetParameter(self,ParaSet):
+        if 'numofexpterm' in ParaSet.hPara:
+            self.NumOfExpTerm = ParaSet.hPara['numofexpterm']
+        if 'dirmu' in ParaSet.hPara:
+            self.DirMu = ParaSet.hPara['dirmu']
+        if 'prfdocnum' in ParaSet.hPara:
+            self.PrfDocNum = ParaSet.hPara['prfdocnum']
+        print "set para as: numofexpterm[%f] dirmu [%f] prfdocnum [%f]" %(self.NumOfExpTerm,self.DirMu,self.PrfDocNum)
+        return True
         
         
 
