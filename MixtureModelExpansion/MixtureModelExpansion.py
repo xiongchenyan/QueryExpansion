@@ -17,12 +17,14 @@ import math
 
 class MixtureModelExpansionC(QueryExpansionC):
     def Init(self):
+        super(MixtureModelExpansionC,self).Init()
         self.Lambda = 0.5
         self.MaxEmIte = 100
         self.EMTerminate = 0.01
         
         
     def SetConf(self,ConfIn):
+        super(MixtureModelExpansionC,self).SetConf(ConfIn)
         conf = cxConf(ConfIn)
         self.Lambda = conf.GetConf('lambda')
         mid = conf.GetConf('maxemite')
@@ -34,8 +36,7 @@ class MixtureModelExpansionC(QueryExpansionC):
         return True
     
     
-    def __init__(self,ConfIn = ""):
-        super(MixtureModelExpansionC,self).__init__(ConfIn)
+    def __init__(self,ConfIn = ""):        
         self.Init()
         if "" != ConfIn:
             self.SetConf(ConfIn)            
