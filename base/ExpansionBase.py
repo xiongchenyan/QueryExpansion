@@ -73,12 +73,12 @@ class QueryExpansionC(object):
     
     def SetParameter(self,ParaSet):
         if 'numofexpterm' in ParaSet.hPara:
-            self.NumOfExpTerm = ParaSet.hPara['numofexpterm']
+            self.NumOfExpTerm = int(ParaSet.hPara['numofexpterm'])
         if 'dirmu' in ParaSet.hPara:
-            self.DirMu = ParaSet.hPara['dirmu']
+            self.DirMu = float(ParaSet.hPara['dirmu'])
         if 'prfdocnum' in ParaSet.hPara:
-            self.PrfDocNum = ParaSet.hPara['prfdocnum']
-        print "set para as: numofexpterm[%f] dirmu [%f] prfdocnum [%f]" %(self.NumOfExpTerm,self.DirMu,self.PrfDocNum)
+            self.PrfDocNum = int(ParaSet.hPara['prfdocnum'])
+        print "set para as: numofexpterm[%d] dirmu [%f] prfdocnum [%d]" %(self.NumOfExpTerm,self.DirMu,self.PrfDocNum)
         return True
         
         
