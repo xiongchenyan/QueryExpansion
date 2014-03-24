@@ -75,7 +75,7 @@ class MixtureModelExpansionC(QueryExpansionC):
     
     def EM(self,lLm,lExpTerm):
         print "start em"
-        lThisTw = [0] * len(lExpTerm) #hidden variable in EM
+        lThisTw = [0.5] * len(lExpTerm) #hidden variable in EM
         lLastTw = list(lThisTw)
         IteNum = 0
         while IteNum < self.MaxEmIte:
