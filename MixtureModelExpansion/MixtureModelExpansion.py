@@ -109,7 +109,7 @@ class MixtureModelExpansionC(QueryExpansionC):
                 lTw[i] = 0
             else:
                 lTw[i] = (1 - self.Lambda)*lExpTerm[i].score / ((1 - self.Lambda)*lExpTerm[i].score + self.Lambda * CorpP)
-        print "E step res\n%s" %(json.dumps(lTw))
+#         print "E step res\n%s" %(json.dumps(lTw))
         return lTw
     
     def M(self,lTw,lLm,lExpTerm):
