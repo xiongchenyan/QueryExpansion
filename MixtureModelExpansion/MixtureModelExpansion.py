@@ -46,7 +46,7 @@ class MixtureModelExpansionC(QueryExpansionC):
     
     @staticmethod
     def ShowConf():
-        super(MixtureModelExpansionC).ShowConf()
+        super(MixtureModelExpansionC,self).ShowConf()
         print "lambda\nmaxemite 100\nemterminate 0.01"
         return True
     
