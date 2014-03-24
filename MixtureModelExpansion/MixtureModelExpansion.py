@@ -38,8 +38,7 @@ class MixtureModelExpansionC(QueryExpansionC):
         super(MixtureModelExpansionC,self).__init__(ConfIn)
         self.Init()
         if "" != ConfIn:
-            self.SetConf(ConfIn)
-            
+            self.SetConf(ConfIn)            
         return
     
     
@@ -63,22 +62,31 @@ class MixtureModelExpansionC(QueryExpansionC):
         #init EM value (TF sum/Z)
         #E step
         #M step
+        print "start working on [%s]" %(query)
         lLm = MakeLmForDocs(lDoc)
-        lExpTerm = self.FormRawExpTermFromLm(qid, query, lLm)     
+        print "doc lm made"        
+        lExpTerm = self.FormRawExpTermFromLm(qid, query, lLm)
+        print "formed [%d] candidate expansion term" %(len(lExpTerm))     
         lExpTerm = self.EM(lLm,lExpTerm)                                            
-        return lExpTerm
+        return lExpTerm[:self.NumOfExpTerm]
         
     
     def EM(self,lLm,lExpTerm):
+        print "start em"
         lThisTw = [0] * len(lExpTerm) #hidden variable in EM
         lLastTw = list(lThisTw)
         IteNum = 0
         while IteNum < self.MaxEmIte:
+            print "ite %d" %(IteNum)
+            print "E step..."
             lThisTw = self.E(lExpTerm)
             if self.EMEnd(lLastTw,lThisTw):
+                print "converged"
                 break
+            print "M step..."
             lExpTerm = self.M(lThisTw,lLm,lExpTerm)            
             IteNum += 1           
+        print "EM finished [%d]" %(IteNum)
         return lExpTerm
     
     
@@ -108,7 +116,9 @@ class MixtureModelExpansionC(QueryExpansionC):
         diff = 0
         for i in range(len(lLastTw)):
             diff += abs(lLastTw[i] - lThisTw[i])
-        return diff/sum(lLastTw) < self.EMTerminate
+        rate = diff/float(sum(lLastTw))
+        print "E step changing rate [%f]" %(rate)
+        return rate < self.EMTerminate
             
     
     

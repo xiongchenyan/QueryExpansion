@@ -30,6 +30,7 @@ class QueryExpansionC(object):
     
     def Init(self):
    #     self.WOrig = 0.5
+        print "initing for QueryExpansionC"
         self.DirMu = 0
         self.NumOfExpTerm = 10
         self.PrfDocNum = 10
