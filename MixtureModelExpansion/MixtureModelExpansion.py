@@ -24,9 +24,10 @@ class MixtureModelExpansionC(QueryExpansionC):
         
         
     def SetConf(self,ConfIn):
+        MixtureModelExpansionC.ShowConf()
         super(MixtureModelExpansionC,self).SetConf(ConfIn)
         conf = cxConf(ConfIn)
-        self.Lambda = conf.GetConf('lambda')
+        self.Lambda = float(conf.GetConf('lambda'))
         mid = conf.GetConf('maxemite')
         if "" != mid:
             self.MaxEmIte = int(mid)
