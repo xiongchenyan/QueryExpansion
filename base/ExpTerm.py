@@ -119,6 +119,13 @@ def ReadQExpTerms(InName):
     
     
     
+def SplitQidQuery(llExpTerm):
+    lQid = []
+    lQuery = []
+    for lExpTerm in llExpTerm:
+        lQid.append(lExpTerm[0].qid)
+        lQuery.append(lExpTerm[0].query)
+    return lQid,lQuery
     
     
 def MinMaxFeatureNormalize(lExpTerm):
@@ -152,8 +159,22 @@ def MinMaxFeatureNormalize(lExpTerm):
     return True
             
             
-                
-  
+            
+def SplitLabelAndFeature(llExpTerm,BinaryScore = False):
+    #generate label (y) and lhFeature (x)
+    lScore = []
+    lhFeature = []
+    for lExpTerm in llExpTerm:
+        for ExpTerm in lExpTerm:
+            score = ExpTerm.score
+            if BinaryScore:
+                if score > 0:
+                    score = 1
+                else:
+                    score = 0
+            lScore.append(score)
+            lhFeature.append(ExpTerm.hFeature)
+    return lScore,lhFeature
         
     
     
