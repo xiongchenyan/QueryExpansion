@@ -117,6 +117,14 @@ def ReadQExpTerms(InName):
         llExpTerm[p].append(ExpTerm)
     return llExpTerm 
     
+
+def BinarizeScore(lExpTerm,Thre = 0):
+    for i in range(len(lExpTerm)):
+        if lExpTerm[i].score > Thre:
+            lExpTerm[i].score = 1
+        else:
+            lExpTerm[i].score = 0
+    return lExpTerm
     
     
 def SplitQidQuery(llExpTerm):
