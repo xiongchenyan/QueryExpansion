@@ -180,8 +180,11 @@ def SplitLabelAndFeature(llExpTerm,BinaryScore = False):
                     score = 1
                 else:
                     score = 0
-            lScore.append(score)
-            lhFeature.append(ExpTerm.hFeature)
+            lScore.append(score)            
+            hFeature = {}
+            for item in ExpTerm.hFeature:
+                hFeature[int(item)] = ExpTerm.hFeature[item]
+            lhFeature.append(hFeature)
     return lScore,lhFeature
         
     
