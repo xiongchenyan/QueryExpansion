@@ -14,7 +14,7 @@ added mixture model expansion method, the method is selected by new conf Expansi
 
 import site
 site.addsitedir('/bos/usr0/cx/local/lib/python2.7/site-packages')
-site.addsitedir('/bos/usr0/cx/cxPyLib')
+site.addsitedir('/bos/usr0/cx/PyCode/cxPyLib')
 site.addsitedir('/bos/usr0/cx/PyCode/Geektools')
 site.addsitedir('/bos/usr0/cx/PyCode/QueryExpansion')
 from cxBase.base import *
