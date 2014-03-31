@@ -11,7 +11,8 @@ import sys
 
 
 if 2 != len(sys.argv):
-    print "1 para: conf\ncashdir\nin\nevaoutdir\nctfpath\nparaset\nqrel\nevadepth\nworig\nnumofexpterm\ndirmu\nprfdocnum\n"
+    print "1 para: conf\n"
+    ExpansionSingleRunPipeC.ShowConf()
     sys.exit()
     
     

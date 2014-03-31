@@ -14,7 +14,7 @@ added mixture model expansion method, the method is selected by new conf Expansi
 
 import site
 site.addsitedir('/bos/usr0/cx/local/lib/python2.7/site-packages')
-site.addsitedir('/bos/usr0/cx/cxPylib')
+site.addsitedir('/bos/usr0/cx/cxPyLib')
 site.addsitedir('/bos/usr0/cx/PyCode/Geektools')
 site.addsitedir('/bos/usr0/cx/PyCode/QueryExpansion')
 from cxBase.base import *
@@ -42,6 +42,7 @@ class ExpansionSingleRunPipeC:
         self.lEvaRes = []
         self.NumOfReRankDoc = 50
         self.ExpansionMethod = 'rm'
+        self.InputType = 'qterm'
         return
     
     
@@ -52,10 +53,9 @@ class ExpansionSingleRunPipeC:
         self.QueryIn = conf.GetConf('in')
         self.EvaOutDir = conf.GetConf('evaoutdir')
         self.CtfPath = conf.GetConf('ctfpath')
-        self.NumOfReRankDoc = int(conf.GetConf('rerankdepth'))
-        
+        self.NumOfReRankDoc = int(conf.GetConf('rerankdepth'))        
         self.ExpansionMethod = conf.GetConf('expmethod')
-        
+        self.InputType = conf.GetConf('inputtype')
         if not os.path.exists(self.EvaOutDir):
             os.makedirs(self.EvaOutDir)
         self.lParaSet = ReadParaSet(conf.GetConf('paraset'))
@@ -71,7 +71,7 @@ class ExpansionSingleRunPipeC:
     
     @staticmethod
     def ShowConf():
-        print "cashdir\nin\nevaoutdir\nctfpath\nrerankdepth\nparaset\nexpmethod rm|mix"
+        print "cashdir\nin\nevaoutdir\nctfpath\nrerankdepth\nparaset\nexpmethod rm|mix\ninputtype qterm|query"
     
     def ProcessPerQ(self,qid,query):
         #load ldocs
@@ -118,6 +118,21 @@ class ExpansionSingleRunPipeC:
         return EvaMeasure
     
     
+    def LoadData(self):
+        
+        lQidQuery = []
+        
+        if self.InputType == 'qterm':
+            for line in open(self.QueryIn):
+                QTerm = ExpTermC(line.strip())
+                lQidQuery.append([QTerm.qid,QTerm.query])
+                lQidQuery = list(set(lQidQuery))            
+        if self.InputType == 'query':
+            for line in open(self.QueryIn):
+                qid,query = line.strip().split('\t')
+                lQidQuery.append[[qid,query]]      
+        return lQidQuery
+    
     
     def Process(self):
         #general processor, deal with things in self.QueryIn, output to self.EvaOutDir
@@ -136,14 +151,12 @@ class ExpansionSingleRunPipeC:
         llOveralEvaRes = []
         lQid = []
         lQuery = []
-        for line in open(self.QueryIn):
-            line = line.strip()
-            qid,query = line.split('\t')
+        lQidQuery = self.LoadData()
+        for qid,query in lQidQuery:
             lQid.append(qid)
             lQuery.append(query)
             lEvaRes = self.ProcessPerQ(qid, query)
-            llOveralEvaRes.append(lEvaRes)
-            
+            llOveralEvaRes.append(lEvaRes)            
         print "runs finished, wrap up evaluation results"
         self.OutPerQPerParaRes(lQid,lQuery,llOveralEvaRes)
         self.OutMeanPerPara(llOveralEvaRes) 
