@@ -125,7 +125,7 @@ class ExpansionSingleRunPipeC:
         if self.InputType == 'qterm':
             for line in open(self.QueryIn):
                 QTerm = ExpTermC(line.strip())
-                lQidQuery.append(QTerm.qid,+"_"+QTerm.query)
+                lQidQuery.append(QTerm.qid +"_"+QTerm.query)
                 lQidQuery = list(set(lQidQuery)) 
             for i in range(len(lQidQuery)):
                 lQidQuery[i] = lQidQuery[i].split('_')           
