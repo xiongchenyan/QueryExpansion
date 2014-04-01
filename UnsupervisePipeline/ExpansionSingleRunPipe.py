@@ -30,7 +30,7 @@ from ExpansionReranker.WeightedReRanker import *
 from MixtureModelExpansion.MixtureModelExpansion import *
 import os,json
 
-class ExpansionSingleRunPipeC:
+class ExpansionSingleRunPipeC(cxBaseC):
     
     def Init(self):
         self.CashDir = ""
@@ -43,6 +43,7 @@ class ExpansionSingleRunPipeC:
         self.NumOfReRankDoc = 50
         self.ExpansionMethod = 'rm'
         self.InputType = 'qterm'
+        self.OutExpTerm = False
         return
     
     
@@ -56,22 +57,17 @@ class ExpansionSingleRunPipeC:
         self.NumOfReRankDoc = int(conf.GetConf('rerankdepth'))        
         self.ExpansionMethod = conf.GetConf('expmethod')
         self.InputType = conf.GetConf('inputtype')
+        self.OutExpTerm  = bool(conf.GetConf('outexpterm'))
         if not os.path.exists(self.EvaOutDir):
             os.makedirs(self.EvaOutDir)
         self.lParaSet = ReadParaSet(conf.GetConf('paraset'))
         print "load conf finished, going to test [%d] para sets" %(len(self.lParaSet))
         return True
     
-    def __init__(self,ConfIn = ""):
-        self.Init()
-        if "" != ConfIn:
-            self.SetConf(ConfIn)
-        return
-    
     
     @staticmethod
     def ShowConf():
-        print "cashdir\nin\nevaoutdir\nctfpath\nrerankdepth\nparaset\nexpmethod rm|mix\ninputtype qterm|query"
+        print "cashdir\nin\nevaoutdir\nctfpath\nrerankdepth\nparaset\nexpmethod rm|mix\ninputtype qterm|query\noutexpterm 0"
     
     def ProcessPerQ(self,qid,query):
         #load ldocs
@@ -79,16 +75,17 @@ class ExpansionSingleRunPipeC:
             #call process for one para
             #record performance
         #return llEvaRes, the performance of this qid at all paras                
-        lEvaRes = []        
+        lEvaRes = [] 
+        llExpTerm = []    #first dime same as para set    
         lDoc = ReadPackedIndriRes(self.CashDir + '/' + query,self.NumOfReRankDoc)        
         for ParaSet in self.lParaSet:
-            lEvaRes.append(self.ProcessPerQWithOnePara(qid, query, lDoc, ParaSet))        
-        return lEvaRes 
+            EvaMeasure,lThisExpTerm = self.ProcessPerQWithOnePara(qid, query, lDoc, ParaSet)
+            lEvaRes.append(EvaMeasure)
+            llExpTerm.append(lThisExpTerm)        
+        return lEvaRes ,llExpTerm
     
     
     def ProcessPerQWithOnePara(self,qid,query,lDoc,ParaSet):
-        EvaMeasure = AdhocMeasureC()
-        
         #set parameters
         ExpansionCenter = QueryExpansionC()
         if self.ExpansionMethod == 'rm':
@@ -115,7 +112,7 @@ class ExpansionSingleRunPipeC:
         #evaluation
         EvaMeasure = AdhocEva.EvaluatePerQ(qid, AdhocEva.SegDocNoFromDocs(lReRankedDoc))
         print "eva done"
-        return EvaMeasure
+        return EvaMeasure,lExpTerm
     
     
     def LoadData(self):
@@ -154,16 +151,19 @@ class ExpansionSingleRunPipeC:
         lQid = []
         lQuery = []
         lQidQuery = self.LoadData()
+        lllExpTerm = [] #dim0:query, dim1: para, dim2: terms
         for qid,query in lQidQuery:
             lQid.append(qid)
             lQuery.append(query)
-            lEvaRes = self.ProcessPerQ(qid, query)
+            lEvaRes,llExpTerm = self.ProcessPerQ(qid, query)
+            lllExpTerm.append(llExpTerm)
             llOveralEvaRes.append(lEvaRes)            
         print "runs finished, wrap up evaluation results"
         self.OutPerQPerParaRes(lQid,lQuery,llOveralEvaRes)
         self.OutMeanPerPara(llOveralEvaRes) 
         
-        
+        if self.OutExpTerm:
+            self.OutExpTermPerPara(lllExpTerm)       
         print "finished"
         
         return True
@@ -208,6 +208,20 @@ class ExpansionSingleRunPipeC:
         return BestMapP,BestNdcgP,BestErrP
         
     
+    def OutExpTermPerPara(self,lllExpTerm):
+        if not os.path.exists(self.EvaOutDir):
+            os.makedirs(self.EvaOutDir)
+        for ParaP in range(len(self.lParaSet)):
+            out = open(self.EvaOutDir + "/" + self.lParaSet[ParaP].dumps() + "_expterm",'w')
+            for QIndex in range(len(lllExpTerm)):
+                for ExpTerm in lllExpTerm[QIndex][ParaP]:
+                    print >>out, ExpTerm.dump()
+            out.close()            
+        return True
+                                  
+        
+        
+    
     
     def OutPerQPerParaRes(self,lQid,lQuery,llOveralEvaRes):
         if not os.path.exists(self.EvaOutDir):
@@ -215,11 +229,9 @@ class ExpansionSingleRunPipeC:
 #         print "outputing:\n%s" %(json.dumps(lQid,indent=1))
         for ParaP in range(len(self.lParaSet)):
             out = open(self.EvaOutDir + "/" + self.lParaSet[ParaP].dumps(),'w')
-            para = self.lParaSet[ParaP]
             EvaMean = AdhocMeasureC()
             for QIndex in range(len(lQid)):
                 EvaRes = llOveralEvaRes[QIndex][ParaP]
-                query = lQuery[QIndex]
                 qid = lQid[QIndex]
                 
                 print >> out,"%s\t%s" %(qid,EvaRes.dumps())
