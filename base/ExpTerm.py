@@ -8,6 +8,7 @@ from json import JSONEncoder
 
 import site
 site.addsitedir('/bos/usr0/cx/PyCode/Geektools')
+site.addsitedir('/bos/usr0/cx/PyCode/cxPyLib')
 from ResultAnalysis.PearsonCoefficient import *
 
 class ExpTermC:
