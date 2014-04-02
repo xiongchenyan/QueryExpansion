@@ -194,7 +194,7 @@ def NormalizeExpTermWeight(lExpTerm):
     for expterm in lExpTerm:
         Z += expterm.score
     for i in range(len(lExpTerm)):
-        lExpTerm[i] /= Z
+        lExpTerm[i].score /= Z
     return lExpTerm    
     
     
