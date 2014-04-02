@@ -43,7 +43,10 @@ class WeightedReRankerC:
         return True
                 
     
-    def ReRank(self,lDoc,lExpTerm):
+    def ReRank(self,lDoc,lExpTerm):        
+        if len(lExpTerm) == 0:
+            #no re-ranking needed
+            return lDoc        
         #return a lReDoc, PackedIndriRes but with only DocNo and Score setted
         print "start reranking for q [%s] doc num [%d], expterm num [%d]" %(lExpTerm[0].query,len(lDoc),len(lExpTerm))
         for ExpTerm in lExpTerm:
