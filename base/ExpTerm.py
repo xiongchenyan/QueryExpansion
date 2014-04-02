@@ -193,8 +193,12 @@ def NormalizeExpTermWeight(lExpTerm):
     Z = 0
     for expterm in lExpTerm:
         Z += expterm.score
-    for i in range(len(lExpTerm)):
-        lExpTerm[i].score /= Z
+    if Z != 0:
+        for i in range(len(lExpTerm)):
+            lExpTerm[i].score /= Z
+    else:
+        if lExpTerm != []:
+            print "exp term for q [%s] all zero" %(lExpTerm[0].query)
     return lExpTerm    
     
     
