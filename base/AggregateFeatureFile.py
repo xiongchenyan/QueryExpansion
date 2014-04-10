@@ -48,6 +48,10 @@ for Term in hExpTerm:
 CurrentExpTerm = ExpTermC()
 for line in open(sys.argv[2]):
     line = line.strip()
+    vCol = line.split('\t')
+    if len(vCol) > 4:
+        print "[%s] error" %(line)
+        continue
     ThisExpTerm = ExpTermC(line)
     if not ThisExpTerm.Key() in hExpTerm:
         continue    
