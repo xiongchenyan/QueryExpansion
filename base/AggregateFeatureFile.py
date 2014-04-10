@@ -37,8 +37,8 @@ out = open(sys.argv[3],'w')
 
 lLabelCnt = [[0,0],[0,0]]
 
-for ExpTerm in hExpTerm:
-    if ExpTerm.score > 0:
+for Term in hExpTerm:
+    if hExpTerm[Term].score > 0:
         lLabelCnt[0][0] += 1
     else:
         lLabelCnt[0][1] += 1
