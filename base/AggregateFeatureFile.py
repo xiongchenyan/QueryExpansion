@@ -49,6 +49,8 @@ CurrentExpTerm = ExpTermC()
 for line in open(sys.argv[2]):
     line = line.strip()
     ThisExpTerm = ExpTermC(line)
+    if not ThisExpTerm.Key() in hExpTerm:
+        continue    
     if CurrentExpTerm.Key() == "":
         CurrentExpTerm = deepcopy(hExpTerm[ThisExpTerm.Key()])
     
