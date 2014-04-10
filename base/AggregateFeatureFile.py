@@ -49,7 +49,7 @@ CurrentExpTerm = ExpTermC()
 for line in open(sys.argv[2]):
     line = line.strip()
     vCol = line.split('\t')
-    if len(vCol) > 4:
+    if len(vCol) > 5:
         print "[%s] error" %(line)
         continue
     ThisExpTerm = ExpTermC(line)
