@@ -38,7 +38,7 @@ class ExpTermC:
             self.score = float(vCol[3])            
         if len(vCol) > 4:
             if not self.SetFeature(vCol[4]):
-                print "load [%s] error" %(line)
+                print "load feature [%s] from [%s] error" %(vCol[4],line)
                 return False
         return True
     
