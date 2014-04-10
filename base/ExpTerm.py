@@ -43,7 +43,7 @@ class ExpTermC:
     
     
     def SetFeature(self,FeatureStr):
-        vF = FeatureStr.split(',')
+        vF = FeatureStr.split('#')
         for feature in vF:
             lMid = feature.split('&')
             dim = lMid[0]
@@ -54,7 +54,7 @@ class ExpTermC:
     def JoinFeatureStr(self):
         FeatureStr = ""
         for item in self.hFeature:
-            FeatureStr += str(item) + '&%f,' %(self.hFeature[item])
+            FeatureStr += str(item) + '&%f#' %(self.hFeature[item])
         return FeatureStr.strip(',')
     
     def dump(self):

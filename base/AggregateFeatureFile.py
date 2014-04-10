@@ -33,6 +33,7 @@ if 4 != len(sys.argv):
     sys.exit()
     
 hExpTerm = LoadScoreExpTerm(sys.argv[1])
+print "load [%d] pair" %(len(hExpTerm))
 out = open(sys.argv[3],'w')
 
 lLabelCnt = [[0,0],[0,0]]
