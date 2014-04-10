@@ -55,7 +55,7 @@ class ExpTermC:
         FeatureStr = ""
         for item in self.hFeature:
             FeatureStr += str(item) + '&%f#' %(self.hFeature[item])
-        return FeatureStr.strip(',')
+        return FeatureStr.strip('#')
     
     def dump(self):
         line = self.qid + "\t" + self.query + '\t' + self.term + '\t%f'%(self.score) + '\t' + self.JoinFeatureStr() 
@@ -77,26 +77,26 @@ class ExpTermC:
     
     
     
-    def ExtractPRALengthFeature(self):
-        hPRALen = {}
-        for feature in self.hFeature:
-            if not self.IsPRAFeature(feature):
-                continue
-            value = self.hFeature[feature]
-            vCol = feature.split('#')
-            PRALen = len(vCol) - 2
-            PRALenName = 'CntPRALen%d' %(PRALen)
-            if not PRALenName in hPRALen:
-                hPRALen[PRALenName] = 0
-            hPRALen[PRALenName] += value
-        for item in hPRALen:
-            self.hFeature[item] = hPRALen[item]
-        return True
-            
-        
-    def IsPRAFeature(self,feature):
-        if '#' in feature:
-            return True        
+#     def ExtractPRALengthFeature(self):
+#         hPRALen = {}
+#         for feature in self.hFeature:
+#             if not self.IsPRAFeature(feature):
+#                 continue
+#             value = self.hFeature[feature]
+#             vCol = feature.split('#')
+#             PRALen = len(vCol) - 2
+#             PRALenName = 'CntPRALen%d' %(PRALen)
+#             if not PRALenName in hPRALen:
+#                 hPRALen[PRALenName] = 0
+#             hPRALen[PRALenName] += value
+#         for item in hPRALen:
+#             self.hFeature[item] = hPRALen[item]
+#         return True
+#             
+#         
+#     def IsPRAFeature(self,feature):
+#         if '#' in feature:
+#             return True        
 
 
 
