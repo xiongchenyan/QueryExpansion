@@ -37,7 +37,9 @@ class ExpTermC:
         if len(vCol) > 3:
             self.score = float(vCol[3])            
         if len(vCol) > 4:
-            self.SetFeature(vCol[4])
+            if not self.SetFeature(vCol[4]):
+                print "load [%s] error" %(line)
+                return False
         return True
     
     
@@ -46,6 +48,8 @@ class ExpTermC:
         vF = FeatureStr.split('#')
         for feature in vF:
             lMid = feature.split('&')
+            if len(lMid) < 2:
+                return False
             dim = lMid[0]
             value = float(lMid[1])
             self.hFeature[dim] = value
