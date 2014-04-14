@@ -80,6 +80,8 @@ class ExpTermC:
         return self.qid + "_"  +self.query + "_" + self.term
     
     
+    def IsEmpty(self):
+        return self.Key() == ExpTermC().Key()
     
 #     def ExtractPRALengthFeature(self):
 #         hPRALen = {}
