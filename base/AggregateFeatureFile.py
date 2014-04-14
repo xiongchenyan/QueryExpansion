@@ -56,16 +56,14 @@ for line in open(sys.argv[2]):
     if not ThisExpTerm.Key() in hExpTerm:
         continue    
     if CurrentExpTerm.Key() == "":
-        CurrentExpTerm = deepcopy(hExpTerm[ThisExpTerm.Key()])
-    
+        CurrentExpTerm = deepcopy(hExpTerm[ThisExpTerm.Key()])    
     if CurrentExpTerm.Key() != ThisExpTerm.Key():
+        print "finished term [%s]" %(CurrentExpTerm.dump())
         print >>out, CurrentExpTerm.dump()
         if CurrentExpTerm.score > 0:
             lLabelCnt[1][0] += 1
         else:
-            lLabelCnt[1][1] += 1
-        
-               
+            lLabelCnt[1][1] += 1       
         CurrentExpTerm = deepcopy(hExpTerm[ThisExpTerm.Key()])
         
     
