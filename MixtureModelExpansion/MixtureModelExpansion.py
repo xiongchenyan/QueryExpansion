@@ -67,6 +67,7 @@ class MixtureModelExpansionC(QueryExpansionC):
         #E step
         #M step
         print "start working on [%s]" %(query)
+        lDoc = lDoc[:self.PrfDocNum]
         lLm = MakeLmForDocs(lDoc)
         print "doc lm made"        
         lExpTerm = self.FormRawExpTermFromLm(qid, query, lLm)

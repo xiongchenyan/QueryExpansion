@@ -26,7 +26,7 @@ class IndriExpansionC(QueryExpansionC):
         
         lExpTerm = []
         hExpTerm = {} #map from term to position in lExpTerm
-        
+        lDoc = lDoc[:self.PrfDocNum]
         lLm = MakeLmForDocs(lDoc)
         
         for i in range(len(lLm)):
