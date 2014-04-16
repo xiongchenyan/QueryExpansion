@@ -208,7 +208,30 @@ def NormalizeExpTermWeight(lExpTerm):
     return lExpTerm    
     
     
+
+def GenerateIndriExpQuery(lExpTerm,NumOfExpTerm = 10000):
+    #generate default indri expansion query
+    #lExpterm should be for a same query (off course)
+    lExpTerm = lExpTerm[:NumOfExpTerm]
+    WOrig = 0.5
+    if len(lExpTerm) == 0:
+        return ""
+    query = lExpTerm[0].query
     
+    ExpQuery = '#weight(%f %s ' %(WOrig,query)
+    QNew = "#weight("
+    for ExpTerm in lExpTerm:
+        QNew += " %f %s" %(ExpTerm.score,ExpTerm.term)
+    QNew += ")"
+    
+    ExpQuery += "%f %s)" %(1-WOrig,QNew)
+    return ExpQuery
+        
+        
+    
+    
+    
+        
     
     
     

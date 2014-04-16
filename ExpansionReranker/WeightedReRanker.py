@@ -21,7 +21,7 @@ import json
 class WeightedReRankerC:
     
     def Init(self):
-        self.IndriInferencer = LmInferencerC('twostage')
+        self.IndriInferencer = LmInferencerC('dir')
         self.CtfCenter = TermCtfC()
         self.WOrig = 0.5
         
@@ -29,7 +29,7 @@ class WeightedReRankerC:
     def SetConf(self,ConfIn):
         conf = cxConf(ConfIn)
         self.CtfCenter.Load(conf.GetConf("ctfpath"))
-        self.WOrig = float(conf.GetConf("worig"))
+        self.WOrig = float(conf.GetConf("worig",self.WOrig))
         return True
     
     def __init__(self,ConfIn = ""):
