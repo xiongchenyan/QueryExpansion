@@ -218,7 +218,7 @@ def GenerateIndriExpQuery(lExpTerm,NumOfExpTerm = 10000):
         return ""
     query = lExpTerm[0].query
     
-    ExpQuery = '#weight(%f %s ' %(WOrig,query)
+    ExpQuery = '#weight(%f #combine (%s) ' %(WOrig,query)
     QNew = "#weight("
     for ExpTerm in lExpTerm:
         QNew += " %f %s" %(ExpTerm.score,ExpTerm.term)
