@@ -27,7 +27,7 @@ class ExpReRankViaIndriC(cxBaseC):
     def SetConf(self,ConfIn):
         self.IndriRanker.SetConf(ConfIn)
         conf = cxConf(ConfIn)
-        self.NumOfExpTerm = conf.GetConf('numofexpterm',self.NumOfExpTerm)
+        self.NumOfExpTerm = int(conf.GetConf('numofexpterm',self.NumOfExpTerm))
         self.ExpTermIn = conf.GetConf('exptermin')
         return True
 
