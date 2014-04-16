@@ -17,7 +17,8 @@ from base.ExpTerm import *
 def MakeExpQFile(llExpTerm,OutName,ExpTermNum = 10000):
     out = open(OutName,'w')
     for lExpTerm in llExpTerm:
+        qid = lExpTerm[0].qid
         query = GenerateIndriExpQuery(lExpTerm,ExpTermNum)
-        print >>out, query
+        print >>out, qid + '\t' + query
     out.close()
     return True
