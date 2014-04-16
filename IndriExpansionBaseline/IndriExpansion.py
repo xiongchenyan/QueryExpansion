@@ -20,6 +20,11 @@ from IndriRelate.IndriInferencer import *
 
 class IndriExpansionC(QueryExpansionC):
     
+    
+    def Init(self):
+        super(IndriExpansionC,self).Init()
+        self.UseIdf = False
+    
     def Process(self,qid,query,lDoc):
         #process query and lDoc
         #output a list of exp term
@@ -39,6 +44,9 @@ class IndriExpansionC(QueryExpansionC):
                 TF = lm.GetTF(term)
                 CTF = self.CtfCenter.GetCtfProb(term)
                 weight = math.log((TF + self.DirMu * CTF)/(DocLen + self.DirMu)) + doc.score
+                if self.UseIdf:
+                    weight += math.log(1.0/CTF)                
+                
                 if not term in hExpTerm:
                     ExpTerm = ExpTermC()
                     ExpTerm.qid = qid
@@ -56,7 +64,10 @@ class IndriExpansionC(QueryExpansionC):
         
         return lExpTerm
     
-
+    def SetParameter(self,ParaSet):
+        super(IndriExpansionC,self).SetParameter(ParaSet)
+        if 'useidf' in ParaSet.hPara:
+            self.UseIdf = bool(ParaSet.hPara['useidf'])
         
     
     

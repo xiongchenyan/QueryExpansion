@@ -34,6 +34,7 @@ class QueryExpansionC(object):
         self.NumOfExpTerm = 10
         self.PrfDocNum = 10
         self.CtfCenter = TermCtfC()
+        
         return
     
     def __init__(self,ConfIn = ""):
