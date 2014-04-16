@@ -45,7 +45,10 @@ class IndriExpansionC(QueryExpansionC):
                 CTF = self.CtfCenter.GetCtfProb(term)
                 weight = math.log((TF + self.DirMu * CTF)/(DocLen + self.DirMu)) + doc.score
                 if self.UseIdf:
-                    weight += math.log(1.0/CTF)                
+                    if CTF == 0:
+                        weight += math.log(1.0/0.5)
+                    else:
+                        weight += math.log(1.0/CTF)                
                 
                 if not term in hExpTerm:
                     ExpTerm = ExpTermC()
