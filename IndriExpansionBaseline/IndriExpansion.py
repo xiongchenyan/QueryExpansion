@@ -62,6 +62,7 @@ class IndriExpansionC(QueryExpansionC):
         lExpTerm.sort(key=attrgetter('score'), reverse=True)
         lExpTerm = lExpTerm[0:int(min(self.NumOfExpTerm,len(lExpTerm)))]
         
+        lExpTerm = NormalizeExpTermWeight(lExpTerm)
 #         self.NormalizeExpTermWeight(lExpTerm)
         #normalized exp score
         
