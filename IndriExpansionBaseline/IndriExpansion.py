@@ -24,7 +24,7 @@ class IndriExpansionC(QueryExpansionC):
     def Init(self):
         super(IndriExpansionC,self).Init()
         self.UseIdf = False
-    
+        self.IdfWeight = 0.5
     def Process(self,qid,query,lDoc):
         #process query and lDoc
         #output a list of exp term
@@ -46,9 +46,8 @@ class IndriExpansionC(QueryExpansionC):
                 weight = math.log((TF + self.DirMu * CTF)/(DocLen + self.DirMu)) + doc.score
                 if self.UseIdf:
                     if CTF == 0:
-                        weight += math.log(1.0/0.5)
-                    else:
-                        weight += math.log(1.0/CTF)                
+                        CTF = 0.5
+                    weight += (1-self.IdfWeight) * weight + self.IdfWeight * math.log(1.0/CTF)                
                 
                 if not term in hExpTerm:
                     ExpTerm = ExpTermC()
@@ -72,6 +71,8 @@ class IndriExpansionC(QueryExpansionC):
         super(IndriExpansionC,self).SetParameter(ParaSet)
         if 'useidf' in ParaSet.hPara:
             self.UseIdf = bool(ParaSet.hPara['useidf'])
+        if 'idfweight' in ParaSet.hPara:
+            self.IdfWeight = float(ParaSet.hPara['idfweight'])
         
     
     
