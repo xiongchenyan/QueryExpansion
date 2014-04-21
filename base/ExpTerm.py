@@ -61,7 +61,7 @@ class ExpTermC:
     def JoinFeatureStr(self):
         FeatureStr = ""
         for item in self.hFeature:
-            FeatureStr += str(item) + '&%f#' %(self.hFeature[item])
+            FeatureStr += item + '&%f#' %(self.hFeature[item])
         return FeatureStr.strip('#')
     
     def dump(self):
