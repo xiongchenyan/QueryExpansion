@@ -14,7 +14,7 @@ do:
 import site
 site.addsitedir('/bos/usr0/cx/PyCode/Geektools')
 site.addsitedir('/bos/usr0/cx/PyCode/cxPyLib')
-
+site.addsitedir('/bos/usr0/cx/PyCode/QueryExpansion')
 import sys
 from ExpTerm import *
 from copy import deepcopy

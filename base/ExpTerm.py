@@ -103,10 +103,20 @@ class ExpTermC:
 #         return True
 #             
 #         
-#     def IsPRAFeature(self,feature):
-#         if '#' in feature:
-#             return True        
-
+    @staticmethod
+    def IsPRAFeature(feature):
+        if "" == feature:
+            return False
+        try:
+            l = json.loads(feature)
+            if type(l) == list:
+                return True
+            return False
+        except ValueError:
+            return False
+    
+    
+    
 
 
 def ReadQExpTerms(InName):
