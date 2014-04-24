@@ -1,81 +1,42 @@
 '''
-Created on Apr 9, 2014
-aggregate feature file for exp term
-input 1: q exp term file (with score, etc ready)
-input 2: sorted exp term feature file (key could be multiple appearance, but must be together)
-do:
-    merge features in feature file to exp term (count is added)
-    and output statistic informations
-        coverage of pos/neg terms in feature file for now
+Created on Apr 23, 2014
+agrregate a feature file of exp term
+input:sorted exp term feature qid\tquery\texpterm\t score \t features
+do: merge feature of a q-t, (sorted to appear together)
+output: exp term, with feature ready
 @author: cx
 '''
 
 
 import site
-site.addsitedir('/bos/usr0/cx/PyCode/Geektools')
 site.addsitedir('/bos/usr0/cx/PyCode/cxPyLib')
 site.addsitedir('/bos/usr0/cx/PyCode/QueryExpansion')
+
+from cxBase.KeyFileReader import KeyFileReaderC
+from base.ExpTerm import ExpTermC
 import sys
-from ExpTerm import *
-from copy import deepcopy
-#build key->expterm
-def LoadScoreExpTerm(InName):
-    hExpTerm = {}
-    for line in open(InName):
-        ExpTerm = ExpTermC(line)
-        hExpTerm[ExpTerm.Key()] = ExpTerm
-    return hExpTerm
-
-
-
-if 4 != len(sys.argv):
-    print "score term + feature term file + output"
+if 3 != len(sys.argv):
+    print "2 para: term feature in + output"
     sys.exit()
     
-hExpTerm = LoadScoreExpTerm(sys.argv[1])
-print "load [%d] pair" %(len(hExpTerm))
-out = open(sys.argv[3],'w')
-
-lLabelCnt = [[0,0],[0,0]]
-
-for Term in hExpTerm:
-    if hExpTerm[Term].score > 0:
-        lLabelCnt[0][0] += 1
-    else:
-        lLabelCnt[0][1] += 1
+    
+out = open(sys.argv[2],'w')
 
 
-CurrentExpTerm = ExpTermC()
-for line in open(sys.argv[2]):
-    line = line.strip()
-    vCol = line.split('\t')
-    if (len(vCol) > 5) | (len(vCol) < 3):
-        print "[%s] error" %(line)
-        continue
-    ThisExpTerm = ExpTermC(line)
-    if not ThisExpTerm.Key() in hExpTerm:
-        continue    
-    if CurrentExpTerm.IsEmpty():
-        CurrentExpTerm = deepcopy(hExpTerm[ThisExpTerm.Key()])    
-    if CurrentExpTerm.Key() != ThisExpTerm.Key():
-        print >>out, CurrentExpTerm.dump()
-        if CurrentExpTerm.score > 0:
-            lLabelCnt[1][0] += 1
+KeyReader = KeyFileReaderC()
+
+KeyReader.open(sys.argv[1])
+
+for lvCol in KeyReader:
+    ExpTerm = ExpTermC()
+    for vCol in ExpTerm:
+        Mid = ExpTermC('\t'.join(vCol))
+        if ExpTerm.empty():
+            ExpTerm = Mid
         else:
-            lLabelCnt[1][1] += 1       
-        CurrentExpTerm = deepcopy(hExpTerm[ThisExpTerm.Key()])
-        
+            ExpTerm.AddFeature(Mid.hFeature)
+    print "[%s] done" %(ExpTerm.Key())
+    print >> out, ExpTerm.dump()
     
-    CurrentExpTerm.AddFeature(ThisExpTerm.hFeature)
-    
-print >>out,CurrentExpTerm.dump()
-if CurrentExpTerm.score > 0:
-    lLabelCnt[1][0] += 1
-else:
-    lLabelCnt[1][1] += 1
 out.close()
-
-print "label cnt:\n%s" %(json.dumps(lLabelCnt,indent=1))
-
-print "finished"
-        
+    

@@ -86,6 +86,8 @@ class ExpTermC:
     def IsEmpty(self):
         return self.Key() == ExpTermC().Key()
     
+    def empty(self):
+        return self.IsEmpty()
 #     def ExtractPRALengthFeature(self):
 #         hPRALen = {}
 #         for feature in self.hFeature:
