@@ -24,7 +24,7 @@ out = open(sys.argv[2],'w')
 
 
 KeyReader = KeyFileReaderC()
-
+KeyReader.lKeyIndex = [0,1,2]
 KeyReader.open(sys.argv[1])
 
 for lvCol in KeyReader:
