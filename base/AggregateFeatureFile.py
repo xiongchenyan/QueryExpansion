@@ -29,7 +29,7 @@ KeyReader.open(sys.argv[1])
 
 for lvCol in KeyReader:
     ExpTerm = ExpTermC()
-    for vCol in ExpTerm:
+    for vCol in lvCol:
         Mid = ExpTermC('\t'.join(vCol))
         if ExpTerm.empty():
             ExpTerm = Mid
