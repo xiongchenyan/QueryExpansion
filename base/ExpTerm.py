@@ -116,9 +116,46 @@ class ExpTermC:
             return False
         except ValueError:
             return False
+    @staticmethod
+    def PRAFeatureType(feature):
+        if not ExpTermC.IsPRAFeature(feature):
+            return 'prf'
+        TypeStr = ''
+        for edge in json.loads(feature):
+            EdgeType = ExpTermC.EdgeType(edge)
+            if '' == EdgeType:
+                continue
+            TypeStr += EdgeType + '-'
+        TypeStr = TypeStr.strip('-')
+        return TypeStr
+            
+        
+        
+    @staticmethod
+    def EdgeType(edge):
+        lStop = set(['search','desp','name'])
+        if edge in lStop:
+            return ''
+        if 'cotype' in edge:
+            return 'cotype'
+        return 'link'
+            
+        
+hStopEdge = dict(zip(['search','desp','name','value'],range(4)))
     
-    
-    
+def SegEdgeFromPRAFeature(feature,DiscardStop = False):
+    lPath = json.loads(feature)
+    lEdge = []
+    for item in lPath:
+        if type(item) == list:
+            for edge in item:
+                lEdge.append(edge)
+        else:
+            lEdge.append(str(item))
+            
+    if DiscardStop:
+        lEdge = [edge for edge in lEdge if not edge in hStopEdge]
+    return lEdge
 
 
 def ReadQExpTerms(InName):
