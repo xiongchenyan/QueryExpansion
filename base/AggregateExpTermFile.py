@@ -25,7 +25,7 @@ for line in open(sys.argv[2]):
     ExpTerm = ExpTermC(line.strip())
     hAddFeature[ExpTerm.Key()] = ExpTerm.hFeature
     
-out = open(sys.argv[3])
+out = open(sys.argv[3],'w')
 
 for line in open(sys.argv[1]):
     ExpTerm = ExpTermC(line.strip())
