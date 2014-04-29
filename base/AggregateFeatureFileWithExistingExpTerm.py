@@ -28,9 +28,12 @@ def LoadScoreExpTerm(InName):
 
 
 
-if 4 != len(sys.argv):
+if 4 > len(sys.argv):
     print "score term + feature term file + output"
     sys.exit()
+
+
+
     
 hExpTerm = LoadScoreExpTerm(sys.argv[1])
 print "load [%d] pair" %(len(hExpTerm))
