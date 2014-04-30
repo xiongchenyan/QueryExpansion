@@ -25,6 +25,35 @@ class IndriExpansionC(QueryExpansionC):
         super(IndriExpansionC,self).Init()
         self.UseIdf = False
         self.IdfWeight = 0.5
+        self.hTargetTerm = {} #record all target terms, if empty, then no filtering
+        
+    def SetConf(self,ConfIn):
+        super(IndriExpansionC,self).SetConf(ConfIn)
+        conf = cxConf(ConfIn)
+        TargetTermInName = conf.GetConf('targettermset')
+        if "" != TargetTermInName:
+            self.LoadTargetTerm(TargetTermInName)
+            print "load target term set from [%s]" %(TargetTermInName)
+        
+    @staticmethod
+    def ShowConf():
+        QueryExpansionC.ShowConf()
+        print "targettermset"
+        
+    def LoadTargetTerm(self,InName):
+        for line in open(InName):
+            ExpTerm = ExpTermC(line.strip())
+            self.hTargetTerm[ExpTerm.Key()] = True
+            
+    def InTargetTermSet(self,qid,query,term):
+        if {} == self.hTargetTerm:
+            return True
+        ExpTerm = ExpTermC()
+        ExpTerm.qid = qid
+        ExpTerm.query = query
+        ExpTerm.term = term
+        return ExpTerm.Key() in self.hTargetTerm
+        
     def Process(self,qid,query,lDoc):
         #process query and lDoc
         #output a list of exp term
@@ -40,6 +69,8 @@ class IndriExpansionC(QueryExpansionC):
             DocLen = lm.len
             for term in lm.hTermTF:
                 if "[OOV]" == term:
+                    continue
+                if not self.InTargetTermSet(qid, query, term):
                     continue
                 TF = lm.GetTF(term)
                 CTF = self.CtfCenter.GetCtfProb(term)
