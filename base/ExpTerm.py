@@ -173,6 +173,8 @@ class ExpTermC:
     def PRAPathFeatureTypeLvlTypeDomain(feature):
         TypeStr = ""   #type-domain-type-domain
         for edge in json.loads(feature):
+            if type(edge) == list:
+                edge = edge[0]            
             Domain = GetDomain(edge)
             TypeStr += Domain + '-'
         TypeStr = TypeStr.strip('-')
