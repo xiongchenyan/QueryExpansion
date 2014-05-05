@@ -127,7 +127,7 @@ class ExpTermC:
                 continue
             TypeStr += EdgeType + '-'
         TypeStr = TypeStr.strip('-')
-        print "[%s] type [%s]" %(feature,TypeStr)
+#         print "[%s] type [%s]" %(feature,TypeStr)
         
         return TypeStr
             
