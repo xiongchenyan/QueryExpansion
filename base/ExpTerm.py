@@ -127,6 +127,8 @@ class ExpTermC:
                 continue
             TypeStr += EdgeType + '-'
         TypeStr = TypeStr.strip('-')
+        print "[%s] type [%s]" %(feature,TypeStr)
+        
         return TypeStr
             
         
@@ -134,6 +136,9 @@ class ExpTermC:
     @staticmethod
     def EdgeType(edge):
         lStop = set(['search','desp','name'])
+        
+        if type(edge) == list:
+            return 'link'
         if edge in lStop:
             return ''
         if 'cotype' in edge:
