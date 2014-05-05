@@ -9,7 +9,8 @@ from json import JSONEncoder
 import site
 site.addsitedir('/bos/usr0/cx/PyCode/Geektools')
 site.addsitedir('/bos/usr0/cx/PyCode/cxPyLib')
-
+site.addsitedir('/bos/usr0/cx/PyCode/GoogleAPI')
+from FreebaseDump.FbDumpBasic import GetDomain
 class ExpTermC:
     
     def Init(self):
@@ -88,23 +89,7 @@ class ExpTermC:
     
     def empty(self):
         return self.IsEmpty()
-#     def ExtractPRALengthFeature(self):
-#         hPRALen = {}
-#         for feature in self.hFeature:
-#             if not self.IsPRAFeature(feature):
-#                 continue
-#             value = self.hFeature[feature]
-#             vCol = feature.split('#')
-#             PRALen = len(vCol) - 2
-#             PRALenName = 'CntPRALen%d' %(PRALen)
-#             if not PRALenName in hPRALen:
-#                 hPRALen[PRALenName] = 0
-#             hPRALen[PRALenName] += value
-#         for item in hPRALen:
-#             self.hFeature[item] = hPRALen[item]
-#         return True
-#             
-#         
+
     @staticmethod
     def IsPRAFeature(feature):
         if "" == feature:
@@ -117,9 +102,24 @@ class ExpTermC:
         except ValueError:
             return False
     @staticmethod
-    def PRAFeatureType(feature):
+    def PRAFeatureType(feature,Grouping='lvltype'):
         if not ExpTermC.IsPRAFeature(feature):
             return 'prf'
+        
+        if Grouping == 'lvltype':
+            return ExpTermC.PRAPathFeatureTypeLvlType(feature)
+        if Grouping == 'type':
+            return ExpTermC.PRAPathFeatureTypeType(feature)
+        if Grouping == 'lvl':
+            return ExpTermC.PRAPathFeatureTypeLvl(feature)
+        if Grouping == 'one':
+            return ExpTermC.PRAPathFeatureTypeOne(feature)
+        if Grouping == 'lvltypedomain':
+            return ExpTermC.PRAPathFeatureTypeLvlTypeDomain(feature)
+        return ''
+            
+    @staticmethod
+    def PRAPathFeatureTypeLvlType(feature):
         TypeStr = ''
         for edge in json.loads(feature):
             EdgeType = ExpTermC.EdgeType(edge)
@@ -130,7 +130,54 @@ class ExpTermC:
 #         print "[%s] type [%s]" %(feature,TypeStr)
         
         return TypeStr
-            
+    
+    @staticmethod
+    def PRAPathFeatureTypeType(feature):
+        TypeStr = "None" #cotype, link, mix
+        CotypeCnt = 0
+        LinkCnt = 0
+        for edge in json.loads(feature):
+            EdgeType = ExpTermC.EdgeType(edge)
+            if '' == EdgeType:
+                continue
+            if EdgeType == 'cotype':
+                CotypeCnt += 1
+            if EdgeType == 'link':
+                LinkCnt += 1
+        if (CotypeCnt > 0) & (LinkCnt > 0):
+            TypeStr = 'mix'
+        else:
+            if CotypeCnt > 0:
+                TypeStr = 'cotype'
+            if LinkCnt > 0:
+                TypeStr = 'link'
+        return TypeStr
+    
+    @staticmethod
+    def PRAPathFeatureTypeOne(feature):
+        return ""
+    
+    @staticmethod
+    def PRAPathFeatureTypeLvl(feature):
+        TypeStr = "None"   #lvl1, lvl2
+        cnt = 0
+        for edge in json.loads(feature):
+            EdgeType = ExpTermC.EdgeType(edge)
+            if '' == EdgeType:
+                continue
+            cnt += 1
+        TypeStr = 'Lvl%d' %(cnt)
+        return TypeStr
+    
+    @staticmethod
+    def PRAPathFeatureTypeLvlTypeDomain(feature):
+        TypeStr = ""   #type-domain-type-domain
+        for edge in json.loads(feature):
+            Domain = GetDomain(edge)
+            TypeStr += Domain + '-'
+        TypeStr = TypeStr.strip('-')
+        return ""
+        
         
         
     @staticmethod

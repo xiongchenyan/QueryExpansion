@@ -6,6 +6,7 @@
 		<project>cxPyLib</project>
 		<project>Freebase</project>
 		<project>Geektools</project>
+		<project>GoogleAPI</project>
 		<project>KnowledgeBase</project>
 	</projects>
 	<buildSpec>
