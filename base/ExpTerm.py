@@ -92,12 +92,12 @@ class ExpTermC:
 
     @staticmethod
     def IsPRAFeature(feature):
-        print "check [%s] whethe PRA" %(feature)
+#         print "check [%s] whethe PRA" %(feature)
         if "" == feature:
             return False
         try:
             l = json.loads(feature)
-            print "loaded l [%s]" %(json.dumps(l))
+#             print "loaded l [%s]" %(json.dumps(l))
             if type(l) == list:
                 return True
             return False
