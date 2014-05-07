@@ -93,7 +93,7 @@ class ExpTermC:
     @staticmethod
     def IsPRAFeature(feature):
 #         print "check [%s] whethe PRA" %(feature)
-        if "" == feature:
+        if type(feature) == str:
             return False
         try:
             l = json.loads(feature)
@@ -104,9 +104,51 @@ class ExpTermC:
         except ValueError:
             return False
     @staticmethod
+    def IsPRFFeature(feature):
+        lPRF = ["CooccurSingleQTermPRF",
+                "CooccurSingleQTermCorp",
+                "TermDistCorp",
+                "WeightedTermProximityCorp",
+                "DocFreqCoorPSF",
+                "WeightedTermProximityPRF",
+                "DocFreqCoorCorp",
+                "CooccurPairQTermPRF",
+                "CooccurPairQTermCorp",
+                "TermDistPSF"]
+        if feature in lPRF:
+            return True
+        return False
+    
+    @staticmethod
+    def IsWord2VecFeature(feature):
+        return feature == "word2vecsim"
+    
+    @staticmethod
+    def IsHyperEdgeFeture(feature):
+        #well TBD better
+        if not (ExpTermC.IsPRAFeature(feature) | ExpTermC.IsPRFFeature(feature) |
+                ExpTermC.IsWord2VecFeature(feature)):
+            return True
+        return False
+    @staticmethod
+    def FeatureGroup(feature):
+        if ExpTermC.IsPRAFeature(feature):
+            
+            return 'pra' + ExpTermC.PRAPathFeatureTypeLvl(feature)
+        if ExpTermC.IsPRFFeature(feature):
+            return 'prf'
+        if ExpTermC.IsWord2VecFeature(feature):
+            return 'prf'
+        if ExpTermC.IsHyperEdgeFeture(feature):
+            return 'hyper'
+        return 'none'
+        
+            
+        
+    @staticmethod
     def PRAFeatureType(feature,Grouping='lvltype'):
         if not ExpTermC.IsPRAFeature(feature):
-            return 'prf'
+            return ExpTermC.FeatureGroup(feature)
         
         if Grouping == 'lvltype':
             return ExpTermC.PRAPathFeatureTypeLvlType(feature)
@@ -187,9 +229,6 @@ class ExpTermC:
     @staticmethod
     def EdgeType(edge):
         lStop = set(['search','desp','name'])
-        
-        if type(edge) == list:
-            return 'link'
         if edge in lStop:
             return ''
         if 'cotype' in edge:
@@ -197,18 +236,13 @@ class ExpTermC:
         return 'link'
             
         
-hStopEdge = dict(zip(['search','desp','name','value'],range(4)))
+hStopEdge = dict(zip(['search','desp','name'],range(4)))
     
 def SegEdgeFromPRAFeature(feature,DiscardStop = False):
     lPath = json.loads(feature)
     lEdge = []
     for item in lPath:
-        if type(item) == list:
-            for edge in item:
-                lEdge.append(edge)
-        else:
-            lEdge.append(str(item))
-            
+        lEdge.append(str(item))
     if DiscardStop:
         lEdge = [edge for edge in lEdge if not edge in hStopEdge]
     return lEdge
@@ -231,6 +265,14 @@ def ReadQExpTerms(InName):
         llExpTerm[p].append(ExpTerm)
     return llExpTerm 
     
+def DumpQExpTerms(llExpTerm,OutName):
+    out = open(OutName,'w')
+    for lExpTerm in llExpTerm:
+        for ExpTerm in lExpTerm:
+            print >>out, ExpTerm.dump()
+    out.close()
+    return True
+
 
 def BinarizeScore(lExpTerm,Thre = 0):
     for i in range(len(lExpTerm)):
