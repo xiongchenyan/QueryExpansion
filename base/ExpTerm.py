@@ -135,7 +135,7 @@ class ExpTermC:
         if ExpTermC.IsPRFFeature(feature):
             return 'prf'
         if ExpTermC.IsWord2VecFeature(feature):
-            return 'prf'
+            return 'word2vec'
         if ExpTermC.IsHyperEdgeFeture(feature):
             return 'hyper'
         return 'none'
