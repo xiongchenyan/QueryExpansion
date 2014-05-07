@@ -18,7 +18,7 @@ from operator import attrgetter
 from base.ExpTerm import *
 from CrossValidation.ParameterSet import *
 import json
-class WeightedReRankerC:
+class WeightedReRankerC(object):
     
     def Init(self):
         self.IndriInferencer = LmInferencerC('dir')

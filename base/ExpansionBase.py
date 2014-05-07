@@ -47,7 +47,7 @@ class QueryExpansionC(object):
         conf = cxConf(ConfIn)
     #    self.WOrig = float(conf.LoadConf("worig"))
         self.DirMu = float(conf.GetConf('dirmu'))
-        self.NumOfExpTerm = int(conf.GetConf("numofexpterm"))
+        self.NumOfExpTerm = int(conf.GetConf("numofexpterm",self.NumOfExpTerm))
         self.PrfDocNum = int(conf.GetConf('prfdocnum'))
         self.CtfCenter.Load(conf.GetConf("ctfpath"))
         return True
