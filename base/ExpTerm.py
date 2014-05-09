@@ -3,31 +3,34 @@ Created on Feb 17, 2014
 data structure for expansion terms
 @author: cx
 '''
-import json,math
-from json import JSONEncoder
+
 
 import site
 site.addsitedir('/bos/usr0/cx/PyCode/Geektools')
 site.addsitedir('/bos/usr0/cx/PyCode/cxPyLib')
 site.addsitedir('/bos/usr0/cx/PyCode/GoogleAPI')
+
+import json,math
+from json import JSONEncoder
 from FreebaseDump.FbDumpBasic import GetDomain
-class ExpTermC:
+from cxBase.FeatureBase import cxFeatureC
+from copy import deepcopy
+class ExpTermC(cxFeatureC):
     
     def Init(self):
+        super(ExpTermC,self).Init()
         self.term = ""
         self.query = ""
         self.qid = ""
         self.score = 0
-        self.hFeature = {} #name->score
         
         
-    def __init__(self,line = ""):
-        self.Init()
-        if "" != line:
-            self.load(line)
-        return
+
     
     
+    def loads(self,line):
+        self.load(line)
+        
     def load(self,line):
 #         print "loading exp term line [%s]" %(line)
         vCol = line.strip().split('\t')
@@ -41,45 +44,32 @@ class ExpTermC:
         if len(vCol) > 3:
             self.score = float(vCol[3])            
         if len(vCol) > 4:
-            if not self.SetFeature(vCol[4]):
-                print "load feature [%s] from [%s] error" %(vCol[4],line)
-                return False
+            super(ExpTermC,self).loads('\t'.join(vCol[4:]))
         return True
     
     
     
-    def SetFeature(self,FeatureStr):
-        vF = FeatureStr.split('#')
-        for feature in vF:
-            lMid = feature.split('&')
-            if len(lMid) < 2:
-                return False
-            dim = lMid[0]
-            value = float(lMid[1])
-            self.hFeature[dim] = value
-        return True
     
-    def JoinFeatureStr(self):
-        FeatureStr = ""
-        for item in self.hFeature:
-            FeatureStr += item + '&%f#' %(self.hFeature[item])
-        return FeatureStr.strip('#')
-    
+    def dumps(self):
+        return self.dump(
+                         )    
     def dump(self):
-        line = self.qid + "\t" + self.query + '\t' + self.term + '\t%f'%(self.score) + '\t' + self.JoinFeatureStr() 
+        line = self.qid + "\t" + self.query + '\t' + self.term + '\t%f'%(self.score) + '\t' + super(ExpTermC,self).dumps()
+         
         return line
     
     
-    def AddFeature(self,hFDict):
-        for item in hFDict:
-            if not item in self.hFeature:
-                self.hFeature[item] = 0
-            self.hFeature[item] += hFDict[item]
-        return True
     
     def __deepcopy__(self,memo):
-        Term = ExpTermC(self.dump())
+        #must use the deepcopy function to make sure memo is correct?
+        Term = ExpTermC()
+        Term.term = deepcopy(self.term,memo)
+        Term.query = deepcopy(self.qid,memo)
+        Term.qid = deepcopy(self.query,memo)
+        Term.score = deepcopy(self.score,memo)
+        Term.hFeature = deepcopy(self.hFeature,memo)
         return Term
+
     def Key(self):
         return self.qid + "_"  +self.query + "_" + self.term
     
@@ -89,7 +79,53 @@ class ExpTermC:
     
     def empty(self):
         return self.IsEmpty()
-
+    
+    
+    
+                    
+    @staticmethod    
+    def FilterNonPosFeature(lData):
+        #can only be done on training data
+        hFeature = {}
+        for data in lData:
+            if data.score <= 0:
+                continue
+            hFeature.update(data.hFeature)
+        
+        lNew = []
+        for data in lData:
+            hNew = {}
+            for feature in data.hFeature:
+                if feature in hFeature:
+                    hNew[feature] = data.hFeature[feature]
+            data.hFeature.clear()
+            data.hFeature = hNew
+            lNew.append(data)
+        return lNew 
+            
+    @staticmethod
+    def SplitByQid(lExpTerm):
+        #lExpterm must be sortted
+        llExpTerm = [[]]
+        p = 0
+        CurrentQid = -1
+        for ExpTerm in llExpTerm:
+            if CurrentQid == -1:
+                CurrentQid = ExpTerm.Qid
+            if CurrentQid != ExpTerm.Qid:
+                llExpTerm.append([])
+                p += 1
+            llExpTerm[p].append(ExpTerm)
+        return llExpTerm
+            
+        
+        
+        
+        
+        
+        
+        
+    
     @staticmethod
     def IsPRAFeature(feature):
 #         print "check [%s] whether PRA" %(feature)
