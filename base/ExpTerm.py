@@ -111,8 +111,8 @@ class ExpTermC(cxFeatureC):
         CurrentQid = -1
         for ExpTerm in llExpTerm:
             if CurrentQid == -1:
-                CurrentQid = ExpTerm.Qid
-            if CurrentQid != ExpTerm.Qid:
+                CurrentQid = ExpTerm.qid
+            if CurrentQid != ExpTerm.qid:
                 llExpTerm.append([])
                 p += 1
             llExpTerm[p].append(ExpTerm)
