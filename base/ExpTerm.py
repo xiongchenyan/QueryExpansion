@@ -91,7 +91,7 @@ class ExpTermC(cxFeatureC):
             if data.score <= 0:
                 continue
             hFeature.update(data.hFeature)
-        
+        print "filter non pos feature in training, [%d] left" %(len(hFeature))
         lNew = []
         for data in lData:
             hNew = {}
