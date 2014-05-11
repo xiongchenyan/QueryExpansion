@@ -109,7 +109,7 @@ class ExpTermC(cxFeatureC):
         llExpTerm = [[]]
         p = 0
         CurrentQid = -1
-        for ExpTerm in llExpTerm:
+        for ExpTerm in lExpTerm:
             if CurrentQid == -1:
                 CurrentQid = ExpTerm.qid
             if CurrentQid != ExpTerm.qid:
