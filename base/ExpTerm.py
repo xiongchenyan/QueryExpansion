@@ -51,8 +51,7 @@ class ExpTermC(cxFeatureC):
     
     
     def dumps(self):
-        return self.dump(
-                         )    
+        return self.dump()  
     def dump(self):
         line = self.qid + "\t" + self.query + '\t' + self.term + '\t%f'%(self.score) + '\t' + super(ExpTermC,self).dumps()
          
@@ -64,8 +63,8 @@ class ExpTermC(cxFeatureC):
         #must use the deepcopy function to make sure memo is correct?
         Term = ExpTermC()
         Term.term = deepcopy(self.term,memo)
-        Term.query = deepcopy(self.qid,memo)
-        Term.qid = deepcopy(self.query,memo)
+        Term.query = deepcopy(self.query,memo)
+        Term.qid = deepcopy(self.qid,memo)
         Term.score = deepcopy(self.score,memo)
         Term.hFeature = deepcopy(self.hFeature,memo)
         return Term
