@@ -48,15 +48,15 @@ class FreebaseObjRankExpansionC(cxBaseC):
     
     @staticmethod
     def ShowConf():
-        print "termctf\nqueryobjrank\nobjcachedir\nnumofterm\nnumofobj"
+        print "ctfpath\nqueryobjrank\nobjcachedir\nnumofexpterm\nnumofobj"
     
     def SetConf(self,ConfIn):
         conf = cxConf(ConfIn)
         self.NumOfObjUsed = int(conf.GetConf('numofobj',self.NumOfObjUsed))
-        self.CtfCenter.Load(conf.GetConf('termctf'))
+        self.CtfCenter.Load(conf.GetConf('ctfpath'))
         self.LoadQObjRank(conf.GetConf('queryobjrank'))
         self.ObjCenter.WorkDir = conf.GetConf('objcachedir')
-        self.NumOfTerm = int(conf.GetConf('numofterm',self.NumOfTerm))
+        self.NumOfTerm = int(conf.GetConf('numofexpterm',self.NumOfTerm))
         
         return
     
