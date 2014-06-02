@@ -55,7 +55,7 @@ class FreebaseObjRankExpansionC(cxBaseC):
         self.NumOfObjUsed = int(conf.GetConf('numofobj',self.NumOfObjUsed))
         self.CtfCenter.Load(conf.GetConf('ctfpath'))
         self.LoadQObjRank(conf.GetConf('queryobjrank'))
-        self.ObjCenter.WorkDir = conf.GetConf('objcachedir')
+        self.ObjCenter.SetConf(ConfIn)
         self.NumOfTerm = int(conf.GetConf('numofexpterm',self.NumOfTerm))
         
         return
