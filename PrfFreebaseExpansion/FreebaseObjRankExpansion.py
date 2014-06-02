@@ -120,6 +120,7 @@ class FreebaseObjRankExpansionC(cxBaseC):
                     hTerm[term] = len(lExpTerm) - 1
                 else:
                     lExpTerm[hTerm[term]].score += score
+        lExpTerm.sort(key=lambda item: item.score,reverse = True)
         return lExpTerm[:self.NumOfExpTerm]
     
     
