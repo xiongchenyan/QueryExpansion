@@ -25,6 +25,10 @@ class WeightedReRankerC(object):
         self.CtfCenter = TermCtfC()
         self.WOrig = 0.5
         
+    
+    @staticmethod
+    def ShowConf():
+        print "ctfpath\nworig"
         
     def SetConf(self,ConfIn):
         conf = cxConf(ConfIn)
