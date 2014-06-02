@@ -101,7 +101,7 @@ class FreebaseObjRankExpansionC(cxBaseC):
             print "obj rank for q [%s] not read" %(qid)
             return lExpTerm
         
-        for ObjId,DocScore in self.hQueryObjRank[qid].items():
+        for ObjId,DocScore in self.hQueryObjRank[qid]:
             desp = self.ObjCenter.FetchObjDesp(ObjId)
             Lm = LmBaseC()
             
