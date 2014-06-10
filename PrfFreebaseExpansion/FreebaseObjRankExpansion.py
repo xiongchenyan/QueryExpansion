@@ -113,7 +113,7 @@ class FreebaseObjRankExpansionC(cxBaseC):
                 tf = Lm.GetTFProb(term)
                 idf = self.CtfCenter.GetLogIdf(term)
                 score = tf * idf * DocScore #doc score is a normalized probability
-                print "term [%s] score [%f]" %(term,score)
+#                 print "term [%s] score [%f]" %(term,score)
                 if not term in hTerm:
                     ExpTerm = ExpTermC()
                     ExpTerm.term = term
@@ -124,7 +124,7 @@ class FreebaseObjRankExpansionC(cxBaseC):
                     hTerm[term] = len(lExpTerm) - 1
                 else:
                     lExpTerm[hTerm[term]].score += score
-                print "term [%s] total score [%s]" %(term,lExpTerm[hTerm[term]].score)
+#                 print "term [%s] total score [%s]" %(term,lExpTerm[hTerm[term]].score)
         lExpTerm.sort(key=lambda item: item.score,reverse = True)
         return lExpTerm[:self.NumOfExpTerm]
     
