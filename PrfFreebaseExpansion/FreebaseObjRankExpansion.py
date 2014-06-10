@@ -100,8 +100,9 @@ class FreebaseObjRankExpansionC(cxBaseC):
         if not qid in self.hQueryObjRank:
             print "obj rank for q [%s] not read" %(qid)
             return lExpTerm
-        
+        print "working on q [%s][%s]" %(qid,query)
         for ObjId,DocScore in self.hQueryObjRank[qid]:
+            print "q [%s] related obj [%s] score [%f]" %(qid,ObjId,DocScore)
             desp = self.ObjCenter.FetchObjDesp(ObjId)
             Lm = LmBaseC()
             
@@ -110,6 +111,7 @@ class FreebaseObjRankExpansionC(cxBaseC):
                 tf = Lm.GetTFProb(term)
                 idf = self.CtfCenter.GetLogIdf(term)
                 score = tf * idf * DocScore #doc score is a normalized probability
+                print "term [%s] score [%f]" %(term,score)
                 if not term in hTerm:
                     ExpTerm = ExpTermC()
                     ExpTerm.term = term
@@ -120,6 +122,7 @@ class FreebaseObjRankExpansionC(cxBaseC):
                     hTerm[term] = len(lExpTerm) - 1
                 else:
                     lExpTerm[hTerm[term]].score += score
+                print "term [%s] total score [%s]" %(term,lExpTerm[hTerm[term]].score)
         lExpTerm.sort(key=lambda item: item.score,reverse = True)
         return lExpTerm[:self.NumOfExpTerm]
     
