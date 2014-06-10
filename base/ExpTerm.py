@@ -352,7 +352,7 @@ def MinMaxFeatureNormalize(lExpTerm):
                 continue
             lExpTerm[i].hFeature[feature] = (lExpTerm[i].hFeature[feature] - fMin)/(fMax - fMin)
     
-    return True
+    return lExpTerm
             
             
             
