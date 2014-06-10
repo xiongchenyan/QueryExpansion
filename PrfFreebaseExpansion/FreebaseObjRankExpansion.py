@@ -38,7 +38,7 @@ class FreebaseObjRankExpansionC(cxBaseC):
         self.CtfCenter = TermCtfC()
         self.hQueryObjRank = {} #qid->[[obj id,ranking score]] rank
         self.ObjCenter = FbObjCacheCenterC() #its parameter must be manually set, not via conf
-        
+        self.QObjRankInName = ""
         #paths and paras
         self.NumOfTerm = 10
         self.NumOfObjUsed = 10
@@ -53,15 +53,16 @@ class FreebaseObjRankExpansionC(cxBaseC):
     def SetConf(self,ConfIn):
         conf = cxConf(ConfIn)
         self.NumOfObjUsed = int(conf.GetConf('numofobj',self.NumOfObjUsed))
-        self.CtfCenter.Load(conf.GetConf('ctfpath'))
-        self.LoadQObjRank(conf.GetConf('queryobjrank'))
+        self.CtfCenter.Load(conf.GetConf('ctfpath'))        
         self.ObjCenter.SetConf(ConfIn)
         self.NumOfTerm = int(conf.GetConf('numofexpterm',self.NumOfTerm))
-        
+        self.QObjRankInName = conf.GetConf('queryobjrank')
         return
     
     
     def LoadQObjRank(self,InName):
+        if len(self.hQueryObjRank) != 0:
+                return 
         for line in open(InName):
             vCol = line.strip().split('\t')
             qid = vCol[0]
@@ -92,8 +93,9 @@ class FreebaseObjRankExpansionC(cxBaseC):
     
     def Process(self,qid,query,lDoc=[]):
         #get obj rank
-        #for each obj, get its term from description, and add to its score
-        
+        #for each obj, get its term from description, and add to its score        
+
+        self.LoadQObjRank(self.QObjRankInName)        
         lExpTerm = []
         hTerm = {} #index to lExpTerm
         
@@ -131,7 +133,9 @@ class FreebaseObjRankExpansionC(cxBaseC):
         
         if 'numofexpterm' in ParaSet.hPara:
             self.NumOfExpTerm = int(ParaSet.hPara['numofexpterm'])
+            print "set para numofexpterm [%d]" %(self.NumOfExpTerm)
         if 'numofobj' in ParaSet.hPara:
             self.NumOfObjUsed = int(ParaSet.hPara['numofobj'])
+            print "set para numofobj [%d]" %(self.NumOfObjUsed)
         
         return True
