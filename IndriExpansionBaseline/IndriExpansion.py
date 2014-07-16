@@ -23,7 +23,7 @@ class IndriExpansionC(QueryExpansionC):
     
     def Init(self):
         super(IndriExpansionC,self).Init()
-        self.UseIdf = False
+        self.UseIdf = True
         self.IdfWeight = 0.5
         self.hTargetTerm = {} #record all target terms, if empty, then no filtering
         
@@ -34,6 +34,8 @@ class IndriExpansionC(QueryExpansionC):
         if "" != TargetTermInName:
             self.LoadTargetTerm(TargetTermInName)
             print "load target term set from [%s]" %(TargetTermInName)
+        self.IdfWeight = conf.GetConf('idfweight',0.5)
+        self.Useidf = bool(int(conf.GetConf('useidf',1.0)))
         
     @staticmethod
     def ShowConf():
