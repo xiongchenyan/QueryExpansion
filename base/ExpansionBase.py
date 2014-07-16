@@ -17,8 +17,8 @@ conf:
 
 
 import site
-site.addsitedir('/bos/usr4/cx/local/lib/python2.7/site-packages')
-site.addsitedir('/bos/usr4/cx/cxPylib')
+site.addsitedir('/bos/usr0/cx/local/lib/python2.7/site-packages')
+site.addsitedir('/bos/usr0/cx/cxPylib')
 
 from IndriRelate.IndriPackedRes import *
 from IndriRelate.CtfLoader import *
@@ -46,9 +46,9 @@ class QueryExpansionC(object):
     def SetConf(self,ConfIn):
         conf = cxConf(ConfIn)
     #    self.WOrig = float(conf.LoadConf("worig"))
-        self.DirMu = float(conf.GetConf('dirmu'))
+        self.DirMu = float(conf.GetConf('dirmu',self.DirMu))
         self.NumOfExpTerm = int(conf.GetConf("numofexpterm",self.NumOfExpTerm))
-        self.PrfDocNum = int(conf.GetConf('prfdocnum'))
+        self.PrfDocNum = int(conf.GetConf('prfdocnum',self.PrfDocNum))
         self.CtfCenter.Load(conf.GetConf("ctfpath"))
         return True
     @staticmethod
