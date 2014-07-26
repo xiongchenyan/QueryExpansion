@@ -88,7 +88,8 @@ class FreebaseObjRankExpansionC(cxBaseC):
                 
             
             
-            
+    def FilterByLength(self,term):
+        return len(term) < 3        
             
     
     def Process(self,qid,query,lDoc=[]):
@@ -110,6 +111,9 @@ class FreebaseObjRankExpansionC(cxBaseC):
             
             Lm.AddRawText(TextBaseC.RawClean(desp))
             for term in Lm.hTermTF:
+                if self.FilterByLength(term):
+                    continue
+                
                 tf = Lm.GetTFProb(term)
                 idf = self.CtfCenter.GetLogIdf(term)
                 score = tf * idf * DocScore #doc score is a normalized probability
