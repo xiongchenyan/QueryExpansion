@@ -266,6 +266,8 @@ class ExpTermC(cxFeatureC):
         if 'cotype' in edge:
             return 'cotype'
         return 'link'
+    
+
             
         
 hStopEdge = dict(zip(['search','desp','name'],range(4)))
@@ -304,6 +306,21 @@ def DumpQExpTerms(llExpTerm,OutName):
             print >>out, ExpTerm.dump()
     out.close()
     return True
+
+def FilterFeatureViaWhiteList(llExpTerm,hName):
+    '''
+    filter the expansion terms via white name list
+    '''
+    for i in range(len(llExpTerm)):
+        for j in range(len(llExpTerm[i])):
+            hNewFeature = {}
+            for item in hName:
+                if item in llExpTerm[i][j].hFeature:
+                    hNewFeature[item] = llExpTerm[i][j].hFeature[item]
+            llExpTerm[i][j].hFeature = hNewFeature
+    return llExpTerm
+
+
 
 
 def BinarizeScore(lExpTerm,Thre = 0):
