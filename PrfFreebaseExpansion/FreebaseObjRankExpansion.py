@@ -91,6 +91,10 @@ class FreebaseObjRankExpansionC(cxBaseC):
     def FilterByLength(self,term):
         return len(term) < 3        
             
+    def DiscardQueryTerm(self,query,term):
+        if term.lower() in query.lower():
+            return True
+        return False
     
     def Process(self,qid,query,lDoc=[]):
         #get obj rank
@@ -112,6 +116,9 @@ class FreebaseObjRankExpansionC(cxBaseC):
             Lm.AddRawText(TextBaseC.RawClean(desp))
             for term in Lm.hTermTF:
                 if self.FilterByLength(term):
+                    continue
+                
+                if self.DiscardQueryTerm(query,term):
                     continue
                 
                 tf = Lm.GetTFProb(term)
