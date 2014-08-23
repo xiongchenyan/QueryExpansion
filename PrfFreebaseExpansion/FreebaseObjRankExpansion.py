@@ -111,8 +111,7 @@ class FreebaseObjRankExpansionC(cxBaseC):
         for ObjId,DocScore in self.hQueryObjRank[qid]:
             print "q [%s] related obj [%s] score [%f]" %(qid,ObjId,DocScore)
             desp = self.ObjCenter.FetchObjDesp(ObjId)
-            Lm = LmBaseC()
-            
+            Lm = LmBaseC()            
             Lm.AddRawText(TextBaseC.RawClean(desp))
             for term in Lm.hTermTF:
                 if self.FilterByLength(term):
@@ -135,6 +134,42 @@ class FreebaseObjRankExpansionC(cxBaseC):
                     hTerm[term] = len(lExpTerm) - 1
                 else:
                     lExpTerm[hTerm[term]].score += score
+#                 print "term [%s] total score [%s]" %(term,lExpTerm[hTerm[term]].score)
+        lExpTerm.sort(key=lambda item: item.score,reverse = True)
+        return lExpTerm[:self.NumOfExpTerm]
+    
+    
+    def ExpandUsingOneObj(self,qid,query,ObjId,lDoc = []):
+       
+        lExpTerm = []
+        hTerm = {} #index to lExpTerm       
+
+        print "working on q [%s][%s]" %(qid,query)
+        DocScore = 1.0
+        desp = self.ObjCenter.FetchObjDesp(ObjId)
+        Lm = LmBaseC()            
+        Lm.AddRawText(TextBaseC.RawClean(desp))
+        for term in Lm.hTermTF:
+            if self.FilterByLength(term):
+                continue
+            
+            if self.DiscardQueryTerm(query,term):
+                continue
+            
+            tf = Lm.GetTFProb(term)
+            idf = self.CtfCenter.GetLogIdf(term)
+            score = tf * idf * DocScore #doc score is a normalized probability
+#                 print "term [%s] score [%f]" %(term,score)
+            if not term in hTerm:
+                ExpTerm = ExpTermC()
+                ExpTerm.term = term
+                ExpTerm.score = score
+                ExpTerm.qid = qid
+                ExpTerm.query = query
+                lExpTerm.append(ExpTerm)
+                hTerm[term] = len(lExpTerm) - 1
+            else:
+                lExpTerm[hTerm[term]].score += score
 #                 print "term [%s] total score [%s]" %(term,lExpTerm[hTerm[term]].score)
         lExpTerm.sort(key=lambda item: item.score,reverse = True)
         return lExpTerm[:self.NumOfExpTerm]
