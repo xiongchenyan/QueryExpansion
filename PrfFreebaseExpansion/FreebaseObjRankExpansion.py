@@ -40,7 +40,7 @@ class FreebaseObjRankExpansionC(cxBaseC):
         self.ObjCenter = FbObjCacheCenterC() #its parameter must be manually set, not via conf
         self.QObjRankInName = ""
         #paths and paras
-        self.NumOfTerm = 10
+        self.NumOfExpTerm = 10
         self.NumOfObjUsed = 10
         
         return
@@ -55,7 +55,7 @@ class FreebaseObjRankExpansionC(cxBaseC):
         self.NumOfObjUsed = int(conf.GetConf('numofobj',self.NumOfObjUsed))
         self.CtfCenter.Load(conf.GetConf('ctfpath'))        
         self.ObjCenter.SetConf(ConfIn)
-        self.NumOfTerm = int(conf.GetConf('numofexpterm',self.NumOfTerm))
+        self.NumOfExpTerm = int(conf.GetConf('numofexpterm',self.NumOfExpTerm))
         self.QObjRankInName = conf.GetConf('queryobjrank')
         return
     
