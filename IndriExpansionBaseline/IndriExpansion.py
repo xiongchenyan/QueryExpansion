@@ -8,6 +8,23 @@ output a list of terms (can be used to re-rank, can also be used as a feature)
 
 @author: cx
 '''
+
+
+
+
+
+
+
+'''
+sep 5 2014
+add expansion using external rank.
+SetConf add externalrank
+load external rank from conf (docno\tscore) (at set conf)
+
+for each qid, fetch its externalrank (if has)
+then re-order the lDoc by the setted score
+'''
+
 import site
 site.addsitedir('/bos/usr0/cx/local/lib/python2.7/site-packages')
 site.addsitedir('/bos/usr0/cx/cxPylib')
@@ -26,6 +43,7 @@ class IndriExpansionC(QueryExpansionC):
         self.UseIdf = True
         self.IdfWeight = 0.5
         self.hTargetTerm = {} #record all target terms, if empty, then no filtering
+        self.hExternalRank = {} #keep all external rank, if empty, then not using 
         
     def SetConf(self,ConfIn):
         super(IndriExpansionC,self).SetConf(ConfIn)
@@ -37,10 +55,16 @@ class IndriExpansionC(QueryExpansionC):
         self.IdfWeight = conf.GetConf('idfweight',0.5)
         self.Useidf = bool(int(conf.GetConf('useidf',1.0)))
         
+        ExternalRankName = conf.GetConf('externalrank')
+        if "" != ExternalRankName:
+            self.LoadExternalRank(ExternalRankName)
+            print 'load external rank'
+        
+        
     @staticmethod
     def ShowConf():
         QueryExpansionC.ShowConf()
-        print "targettermset"
+        print "targettermset\nexternalrank"
         
     def LoadTargetTerm(self,InName):
         for line in open(InName):
@@ -55,6 +79,35 @@ class IndriExpansionC(QueryExpansionC):
         ExpTerm.query = query
         ExpTerm.term = term
         return ExpTerm.Key() in self.hTargetTerm
+    
+    
+    def LoadExternalRank(self,InName):
+        self.hExternalRank = {}
+        for line in open(InName):
+            qid,docno,score =line.strip().split('\t')
+            if not qid in self.hExternalRank:
+                self.hExternalRank[qid] = {}
+            self.hExternalRank[qid][docno] = float(score)
+        return True
+        
+    def UseExternalRank(self,qid,lDoc):
+        if  {} == self.hExternalRank:
+            return lDoc
+        
+        if not qid in self.hExternalRank:
+            return lDoc
+        
+        hExtRank = self.hExternalRank[qid] #docno->score
+        lNewDoc = []
+        for doc in lDoc:
+            if doc.DocNo in hExtRank:
+                doc.score = hExtRank[doc.DocNo]
+                lNewDoc.append(doc)
+        lNewDoc.sort(key=lambda item: item.score, reverse = True)
+        return lNewDoc
+        
+        
+           
         
     def Process(self,qid,query,lDoc):
         #process query and lDoc
@@ -62,8 +115,15 @@ class IndriExpansionC(QueryExpansionC):
         
         lExpTerm = []
         hExpTerm = {} #map from term to position in lExpTerm
-        lDoc = lDoc[:self.PrfDocNum]
-        lLm = MakeLmForDocs(lDoc)
+        
+        '''
+        reorder,filter and set score by external rank        
+        '''
+        lDoc = self.UseExternalRank(qid,lDoc)        
+        lDoc = lDoc[:self.PrfDocNum]        
+        lLm = MakeLmForDocs(lDoc)        
+        
+        
         
         for i in range(len(lLm)):
             lm = lLm[i]
@@ -106,6 +166,7 @@ class IndriExpansionC(QueryExpansionC):
             self.UseIdf = bool(ParaSet.hPara['useidf'])
         if 'idfweight' in ParaSet.hPara:
             self.IdfWeight = float(ParaSet.hPara['idfweight'])
+
         
     
     
