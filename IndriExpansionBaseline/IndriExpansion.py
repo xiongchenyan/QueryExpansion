@@ -123,12 +123,14 @@ class IndriExpansionC(QueryExpansionC):
         lDoc = lDoc[:self.PrfDocNum]        
         lLm = MakeLmForDocs(lDoc)        
         
-        
+        print "num of prf doc [%d]" %(len(lDoc))
         
         for i in range(len(lLm)):
             lm = lLm[i]
             doc = lDoc[i]
             DocLen = lm.len
+            print "using [%s]" %(doc.DocNo)
+            
             for term in lm.hTermTF:
                 if "[OOV]" == term:
                     continue
