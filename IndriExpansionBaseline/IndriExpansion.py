@@ -160,6 +160,20 @@ class IndriExpansionC(QueryExpansionC):
         
         return lExpTerm
     
+    
+    
+    def ExpandUsingOneObj(self,qid,query,DocNo,lDoc):
+        lNewDoc = []
+        DocScore = math.log(1.0)
+        for doc in lDoc:
+            if doc.DocNo == DocNo:
+                doc.score = DocScore
+                lNewDoc.append(doc)
+                break
+        return self.Process(qid, query, lNewDoc)
+        
+    
+    
     def SetParameter(self,ParaSet):
         super(IndriExpansionC,self).SetParameter(ParaSet)
         if 'useidf' in ParaSet.hPara:
