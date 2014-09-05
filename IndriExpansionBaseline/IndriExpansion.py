@@ -172,7 +172,7 @@ class IndriExpansionC(QueryExpansionC):
                 doc.score = DocScore
                 lNewDoc.append(doc)
                 break
-        print "expanding [%s][%s] using [%s]" %(qid,query,DocNo)
+        print "expanding [%s][%s] using [%s] [%d] found" %(qid,query,DocNo,len(lNewDoc))
         return self.Process(qid, query, lNewDoc)
         
     
