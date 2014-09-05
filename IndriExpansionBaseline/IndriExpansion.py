@@ -157,7 +157,7 @@ class IndriExpansionC(QueryExpansionC):
         lExpTerm = NormalizeExpTermWeight(lExpTerm)
 #         self.NormalizeExpTermWeight(lExpTerm)
         #normalized exp score
-        
+        print "get [%d] exp term" %(len(lExpTerm))
         return lExpTerm
     
     
@@ -170,6 +170,7 @@ class IndriExpansionC(QueryExpansionC):
                 doc.score = DocScore
                 lNewDoc.append(doc)
                 break
+        print "expanding [%s][%s] using [%s]" %(qid,query,DocNo)
         return self.Process(qid, query, lNewDoc)
         
     
