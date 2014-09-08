@@ -84,10 +84,15 @@ class IndriExpansionC(QueryExpansionC):
     def LoadExternalRank(self,InName):
         self.hExternalRank = {}
         for line in open(InName):
-            qid,docno,score =line.strip().split('\t')
+            vCol = line.strip().split('\t')
+            if len(vCol) < 4:
+                continue
+            qid = vCol[0]
+            docno = vCol[2]
+            score = float(vCol[3])
             if not qid in self.hExternalRank:
                 self.hExternalRank[qid] = {}
-            self.hExternalRank[qid][docno] = float(score)
+            self.hExternalRank[qid][docno] = score
         return True
         
     def UseExternalRank(self,qid,lDoc):
