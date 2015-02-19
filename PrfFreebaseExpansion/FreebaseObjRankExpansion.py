@@ -22,7 +22,7 @@ site.addsitedir('/bos/usr0/cx/PyCode/GoogleAPI')
 
 from cxBase.base import cxBaseC,cxConf
 from base.ExpTerm import *
-from FbObjCenter.FbObjCacheCenter import *
+from ObjCenter.FbObjCacheCenter import *
 from CrossValidation.ParameterSet import *
 from IndriRelate.CtfLoader import *
 from IndriRelate.IndriInferencer import LmBaseC
